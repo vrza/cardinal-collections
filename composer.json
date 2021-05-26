@@ -1,0 +1,24 @@
+{
+    "name": "vrza/cardinal-collections",
+    "description": "Cardinal Collections for PHP",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vladimir Vrzić",
+            "email": "vvrzic@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=7"
+    },
+    "autoload": {
+        "psr-4": {
+            "CardinalCollections\\": "src/",
+            "CardinalCollections\\Mutable\\": "src/mutable/"
+        }
+    }
+}

@@ -1,0 +1,50 @@
+= PHP Cardinal Collections
+
+PHP Map and Set, but with anything as key.
+
+== Features
+
+Implements `ArrayAccess`, `Iterator` and `Countable` interfaces, so you can use it like you would a standard PHP array:
+
+[source,php]
+----
+$a[] = ['foo' => 'bar'];
+$value = $a[0];
+unset($a[0]);
+count($a);
+foreach ($a as $key => $value);
+----
+
+== API Reference
+
+=== Constructor
+[source,php]
+----
+Map(array $array = [])
+----
+Creates a new `Map` collection, initialized from the given array. If called without arguments, an empty collection is created.
+
+=== count
+[source,php]
+----
+count(): int
+----
+Returns the number of documents in the collection.
+
+
+== Setup
+
+Add the following to your `composer.json`:
+
+[source,json]
+----
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/vrza/cardinal-collections"
+         }
+    ],
+    "require": {
+        "vrza/cardinal-collections": "dev-main"
+    }
+----

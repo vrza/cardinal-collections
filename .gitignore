@@ -1,0 +1,10 @@
+# PHP composer
+composer.lock
+vendor/
+
+# PHPUnit
+.phpunit.result.cache
+
+# editors
+.idea/
+*.swp
