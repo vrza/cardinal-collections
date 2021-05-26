@@ -73,7 +73,7 @@ class IteratorPosition
             unset($this->keyToPosition[$key]);
             $this->positionToKey = array_keys($this->keyToPosition);
             if ($this->position >= $keyPosition) {
-                fwrite(STDOUT, "Remove: position " . $this->position . ">=" . $keyPosition . PHP_EOL);
+                //fwrite(STDOUT, "Remove: position " . $this->position . ">=" . $keyPosition . PHP_EOL);
                 $this->position--;
                 if ($this->position < -1) {
                     fwrite(STDOUT, "Unexpected iterator position: " . $this->position . PHP_EOL);

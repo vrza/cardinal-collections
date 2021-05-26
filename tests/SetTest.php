@@ -107,10 +107,8 @@ class SetTest extends TestCase
         $this->assertCount(2, $a);
         $this->assertTrue($a->nonEmpty());
         foreach ($a as $elem) {
-            $a->dump();
             $a->remove($elem);
         }
-        $a->dump();
         $this->assertCount(0, $a);
         $this->assertTrue($a->isEmpty());
     }
