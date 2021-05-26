@@ -17,7 +17,7 @@ class Utilities {
         return is_int($x) || is_string($x);
     }
 
-    public function hashAny($value, string $algo = 'sha256')
+    public static function hashAny($value, string $algo = 'sha256')
     {
         $type = gettype($value);
         switch ($type) {
