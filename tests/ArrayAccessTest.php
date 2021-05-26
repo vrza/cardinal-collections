@@ -61,4 +61,18 @@ class ArrayAccessTest extends TestCase
         $this->assertCount(2, $powerMap);
         $this->assertNull($powerMap[null]);
     }
+
+    public function testIterator(): void
+    {
+        $list = new Map();
+        $list[] = 'foo';
+        $list[] = 'bar';
+        $list[] = 'baz';
+        $this->assertCount(3, $list);
+        $string = '';
+        foreach ($list as $element) {
+            $string .= $element;
+        }
+        $this->assertEquals('foobarbaz', $string);
+    }
 }

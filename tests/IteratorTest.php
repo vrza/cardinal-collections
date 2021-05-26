@@ -31,4 +31,36 @@ class IteratorTest extends TestCase
         $this->assertEquals('peramikalazo', $keys);
         $this->assertEquals('PeraMikaLazo', $names);
     }
+
+    public function testRemove(): void
+    {
+        $initialArray = [
+            'pera' => [
+                'name' => 'Pera',
+                'email' => 'pera@ddr.ex'
+            ],
+            'mika' => [
+                'name' => 'Mika',
+                'email' => 'mika@frg.ex'
+            ],
+            'lazo' => [
+                'name' => 'Lazo',
+                'email' => 'lazo@sfrj.ex'
+            ]
+        ];
+        $a = new Map($initialArray);
+        $reachedLastElement = false;
+        foreach ($a as $k => $v) {
+            if ($k == 'mika') {
+                $a->remove('pera');
+            }
+            if ($k == 'lazo') {
+                $reachedLastElement = true;
+                $a->remove($k);
+            }
+        }
+        $a->dump();
+        $this->assertTrue($reachedLastElement);
+        $this->assertCount(1, $a);
+    }
 }
