@@ -59,7 +59,6 @@ class IteratorTest extends TestCase
                 $a->remove($k);
             }
         }
-        $a->dump();
         $this->assertTrue($reachedLastElement);
         $this->assertCount(1, $a);
     }
