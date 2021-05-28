@@ -10,11 +10,22 @@ Built-in map/reduce/filter
 
 [source,php]
 ----
-$set = new Set([1, 3, 5]);
+$set = new Set([0, 1, 2, 3]);
+$squares = $set->map(function ($x) {
+    return $x * $x;
+});
+echo $squares->toString();
+// output: { 0, 1, 4, 9 }
+----
+
+[source,php]
+----
+$set = new Set([1, 3, 5, 7]);
 $sum = $set->reduce(function ($acc, $x) {
     return $acc + $x;
 });
-// $sum == 9
+echo $sum;
+// output: 16
 ----
 
 [source,php]
