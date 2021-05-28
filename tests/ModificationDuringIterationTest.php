@@ -17,12 +17,13 @@ class ModificationDuringIterationTest extends TestCase
             1, 2, 3, 4, 5
         ];
         $set = new Set($initialArray);
+        $verificationSet = new Set();
         foreach ($set as $v1) {
             foreach ($set as $v2) {
                 if ($v1 == 1 && $v2 == 1) {
                     $set->remove(1);
                 }
-                //echo "($v1, $v2)\n";
+                $verificationSet->add([$v1, $v2]);
                 /* TODO
                  * PHP 5 output: (1, 1) (1, 3) (1, 4) (1, 5)
                  * PHP 7 output: (1, 1) (1, 3) (1, 4) (1, 5)
@@ -34,6 +35,8 @@ class ModificationDuringIterationTest extends TestCase
             }
         }
         $this->assertCount(4, $set);
+        $this->assertTrue($verificationSet->has([1, 2]));
+
     }
 
     public function testRemoveAddSameKey(): void
@@ -43,10 +46,9 @@ class ModificationDuringIterationTest extends TestCase
         foreach ($map as $value) {
             unset($map['EzFY']);
             $map['FYFY'] = 4;
-            //var_dump($value);
-            /* TODO
-             * PHP 5 output: 1, 4   -- we have this behavior now
-             * PHP 7 output : 1, 3, 4
+            /*
+             * PHP 5 output: 1, 4
+             * PHP 7 output: 1, 3, 4 <- we have this behavior
              *
              * Previously the HashPointer restore mechanism jumped
              * right to the new element because it "looked" like
@@ -56,6 +58,11 @@ class ModificationDuringIterationTest extends TestCase
              */
         }
         $this->assertCount(3, $map);
+        $verificationSet = new Set();
+        foreach ($map as $value) {
+            $verificationSet->add($value);
+        }
+        $this->assertTrue($verificationSet->equals(new Set([1, 3, 4])));
     }
 
     public function testRemove(): void
