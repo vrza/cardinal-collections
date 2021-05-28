@@ -4,7 +4,6 @@ namespace CardinalCollections;
 
 class IteratorPosition
 {
-    private $positionToKey = [];
     private $keyToPosition = [];
     private $position = 0;
 
@@ -15,54 +14,63 @@ class IteratorPosition
         }
     }
 
+    private function enumerateKeyToPosition() {
+        $i = 0;
+        foreach ($this->keyToPosition as $key => $position) {
+            $this->keyToPosition[$key] = $i++;
+        }
+    }
+
     public function dump()
     {
         var_dump($this->position);
-        var_dump($this->positionToKey);
         var_dump($this->keyToPosition);
+    }
+
+    private static function handleInvalidPosition($position) {
+        fwrite(STDERR, 'Unexpected iterator position: ' . $position . PHP_EOL);
+        throw new \Exception("Unexpected iterator position: " . position);
     }
 
     public function rewind()
     {
         $this->position = 0;
-    }
-
-    public function getPositionByKey($key): int
-    {
-        return $this->keyToPosition[$key];
-    }
-
-    public function getKeyByPosition($position)
-    {
-        return $this->positionToKey[$position];
-    }
-
-    public function getPosition()
-    {
-        return $this->position;
+        reset($this->keyToPosition);
     }
 
     public function key()
     {
-        return $this->positionToKey[$this->position];
+        return $this->valid() ? key($this->keyToPosition) : null;
     }
 
     public function next()
     {
-        $this->position++;
+        if ($this->position >= 0) {
+            next($this->keyToPosition);
+        } elseif ($this->position == -1) {
+            reset($this->keyToPosition);
+        } else {
+            self::handleInvalidPosition($this->position . PHP_EOL);
+        }
+        ++$this->position;
     }
 
     public function valid()
     {
-        return $this->position < count($this->positionToKey);
+        return $this->position < count($this->keyToPosition);
     }
 
     public function add($key)
     {
-        $keyDoesNotExist = ! array_key_exists($key, $this->keyToPosition);
-        if ($keyDoesNotExist) {
+        if (!array_key_exists($key, $this->keyToPosition)) {
             $this->addNew($key);
         }
+    }
+
+    private function addNew($key)
+    {
+        $count = count($this->keyToPosition);
+        $this->keyToPosition[$key] = $count;
     }
 
     public function remove($key)
@@ -71,21 +79,14 @@ class IteratorPosition
         if ($keyExists) {
             $keyPosition = $this->keyToPosition[$key];
             unset($this->keyToPosition[$key]);
-            $this->positionToKey = array_keys($this->keyToPosition);
+            $this->enumerateKeyToPosition();
             if ($keyPosition <= $this->position) {
-                $this->position--;
+                --$this->position;
                 if ($this->position < -1) {
-                    fwrite(STDOUT, "Unexpected iterator position: " . $this->position . PHP_EOL);
-                    throw new \Exception("Unexpected iterator position: " . $this->position);
+                    self::handleInvalidPosition($this->position . PHP_EOL);
                 }
             }
         }
-    }
-
-    private function addNew($key)
-    {
-        $this->positionToKey[] = $key;
-        $this->keyToPosition[$key] = $this->position++;
     }
 
 }
