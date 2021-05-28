@@ -130,7 +130,7 @@ class Set implements Countable, Iterator
         }, $that->clone($that));
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         $acc = '{ ';
         $sep = '';

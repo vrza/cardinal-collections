@@ -197,7 +197,7 @@ class Map implements ArrayAccess, Countable, Iterator
         return $this->originalKeys[$hash];
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         $acc = '( ';
         $sep = PHP_EOL;
