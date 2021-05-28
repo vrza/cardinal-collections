@@ -38,7 +38,9 @@ class Map implements ArrayAccess, Countable, Iterator
             $this->originalKeys[$key] = $offset;
             $isNew = !array_key_exists($key, $this->hashmap);
             $v = $this->hashmap[$key] = $value;
-            if ($isNew) $this->iteratorPosition->add($key);
+            if ($isNew) {
+                $this->iteratorPosition->add($key);
+            }
             return $v;
         }
     }
@@ -193,6 +195,19 @@ class Map implements ArrayAccess, Countable, Iterator
     public function getOriginalKey($hash)
     {
         return $this->originalKeys[$hash];
+    }
+
+    public function toString(): string
+    {
+        $acc = '( ';
+        $sep = PHP_EOL;
+        foreach ($this as $key => $value) {
+            $acc .= $sep . '  ' .
+                Utilities::stringRepresentation($this->originalKeys[$key]) .
+                ' -> ' . Utilities::stringRepresentation($value);
+        }
+        $acc .= $sep . ')';
+        return $acc;
     }
 
 }

@@ -107,4 +107,9 @@ class Utilities {
 
         return array_keys($keys) !== $keys;
     }
+
+    public static function stringRepresentation($value): string
+    {
+        return json_encode($value);
+    }
 }

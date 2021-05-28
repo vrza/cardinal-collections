@@ -7,6 +7,7 @@ use Countable;
 use Iterator;
 
 use CardinalCollections\Collection;
+use CardinalCollections\Utilities;
 
 class Set implements Countable, Iterator
 {
@@ -127,6 +128,18 @@ class Set implements Countable, Iterator
         return $this->reduce(function($acc, $elem) {
             return $acc->add($elem);
         }, $that->clone($that));
+    }
+
+    public function toString(): string
+    {
+        $acc = '{ ';
+        $sep = '';
+        foreach ($this as $elem) {
+            $acc .= $sep . Utilities::stringRepresentation($elem);
+            $sep = ', ';
+        }
+        $acc .= ' }';
+        return $acc;
     }
 
 }
