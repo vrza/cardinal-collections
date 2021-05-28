@@ -167,7 +167,7 @@ class SetTest extends TestCase
         $set = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
         $odd = $set->filter(function($x) {
             return $x % 2 == 1;
-        });;
+        });
         $this->assertInstanceOf(Set::class, $odd);
         $this->assertCount(5, $odd);
         $this->assertEquals([1, 3, 5, 7, 9], $odd->asArray());
