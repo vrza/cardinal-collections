@@ -36,7 +36,6 @@ class ModificationDuringIterationTest extends TestCase
         }
         $this->assertCount(4, $set);
         $this->assertTrue($verificationSet->has([1, 2]));
-
     }
 
     public function testRemoveAddSameKey(): void
@@ -94,5 +93,19 @@ class ModificationDuringIterationTest extends TestCase
         }
         $this->assertTrue($reachedLastElement);
         $this->assertCount(1, $a);
+    }
+
+    public function testRemovePrevious(): void
+    {
+        $initialArray = [
+            1, 2, 3, 4, 5
+        ];
+        $set = new Set($initialArray);
+        $previous = false;
+        foreach ($set as $elem) {
+            if ($previous) $set->remove($previous);
+            $previous = $elem;
+        }
+        $this->assertTrue($set->equals(new Set([5])));
     }
 }
