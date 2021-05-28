@@ -13,25 +13,25 @@ class ArrayAccessTest extends TestCase
                 'email' => 'pera@ddr.ex'
             ]
         ];
-        $powerMap = new Map($initialArray);
-        $this->assertTrue(isset($powerMap['pera']));
-        $this->assertFalse(isset($powerMap['mika']));
-        $this->assertCount(1, $powerMap);
-        $powerMap['mika'] = [
+        $map = new Map($initialArray);
+        $this->assertTrue(isset($map['pera']));
+        $this->assertFalse(isset($map['mika']));
+        $this->assertCount(1, $map);
+        $map['mika'] = [
             'name' => 'Mika',
             'email' => 'mika@frg.ex'
         ];
-        $this->assertCount(2, $powerMap);
-        $this->assertTrue(isset($powerMap['mika']));
-        $powerMap['lazo'] = [
+        $this->assertCount(2, $map);
+        $this->assertTrue(isset($map['mika']));
+        $map['lazo'] = [
             'name' => 'Lazo',
             'email' => 'lazo@sfrj.ex'
         ];
-        $this->assertCount(3, $powerMap);
-        unset($powerMap['mika']);
-        $this->assertFalse(isset($powerMap['mika']));
-        $this->assertCount(2, $powerMap);
-        $l = $powerMap['lazo'];
+        $this->assertCount(3, $map);
+        unset($map['mika']);
+        $this->assertFalse(isset($map['mika']));
+        $this->assertCount(2, $map);
+        $l = $map['lazo'];
         $this->assertEquals('Lazo', $l['name']);
     }
 
@@ -43,12 +43,12 @@ class ArrayAccessTest extends TestCase
                 'email' => 'pera@ddr.ex'
             ]
         ];
-        $powerMap = new Map($initialArray);
-        $powerMap[] = [
+        $map = new Map($initialArray);
+        $map[] = [
             'name' => 'Mika',
             'email' => 'mika@frg.ex'
         ];
-        $primaryKeys = $powerMap->keys();
+        $primaryKeys = $map->keys();
         $this->assertCount(2, $primaryKeys);
         $this->assertEquals('pera', $primaryKeys[0]);
         $this->assertEquals(0, $primaryKeys[1]);
@@ -56,10 +56,10 @@ class ArrayAccessTest extends TestCase
 
     public function testNullOffset(): void
     {
-        $powerMap = new Map(['one', 'two']);
-        unset($powerMap[null]);
-        $this->assertCount(2, $powerMap);
-        $this->assertNull($powerMap[null]);
+        $map = new Map(['one', 'two']);
+        unset($map[null]);
+        $this->assertCount(2, $map);
+        $this->assertNull($map[null]);
     }
 
     public function testIterator(): void
