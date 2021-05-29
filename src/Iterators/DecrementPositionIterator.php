@@ -1,8 +1,15 @@
 <?php
 
-namespace CardinalCollections;
+namespace CardinalCollections\Iterators;
 
-class IteratorPosition
+/*
+ *  An Iterator that decrements the position whenever a key
+ *  at or before the cursor is removed.
+ *
+ *  This design has O(n) removal time, as all elements are re
+ *  be re-enumerated on each removal.
+ */
+class DecrementPositionIterator
 {
     private $keyToPosition = [];
     private $position = 0;

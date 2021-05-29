@@ -17,8 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "CardinalCollections\\": "src/",
-            "CardinalCollections\\Mutable\\": "src/mutable/"
+            "CardinalCollections\\": "src/"
         }
     }
 }

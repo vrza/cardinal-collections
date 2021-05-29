@@ -3,12 +3,12 @@
 namespace CardinalCollections\Mutable;
 
 use ArrayAccess;
-use CardinalCollections\IteratorPosition;
 use Countable;
 use Iterator;
 
 use CardinalCollections\Collection;
 use CardinalCollections\Utilities;
+use CardinalCollections\Iterators\FastRemovalIterator;
 
 class Map implements ArrayAccess, Countable, Iterator
 {
@@ -25,7 +25,7 @@ class Map implements ArrayAccess, Countable, Iterator
         foreach ($array as $key => $_value) {
             $this->originalKeys[$key] = $key;
         }
-        $this->iteratorPosition = new IteratorPosition($this->hashmap);
+        $this->iteratorPosition = new FastRemovalIterator($this->hashmap);
     }
 
     // ArrayAccess interface
