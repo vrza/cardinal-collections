@@ -6,8 +6,8 @@ namespace CardinalCollections\Iterators;
  *  An Iterator that decrements the position whenever a key
  *  at or before the cursor is removed.
  *
- *  This design has O(n) removal time, as all elements are re
- *  be re-enumerated on each removal.
+ *  This design has O(n) removal time, as all elements are
+ *  re-enumerated on each removal.
  */
 class DecrementPositionIterator
 {
