@@ -14,7 +14,6 @@ trait Collection
         $this->rewind();
 
         if (is_null($initialValue)) {
-            //$initialValue = $this->current();
             $c = $this->currentTuple();
             $initialValue = count($c) == 1 ? $c[0] : $c;
             $this->next();
@@ -23,8 +22,6 @@ trait Collection
         $acc = $initialValue;
 
         while ($this->valid()) {
-            //$currentValue = $this->current();
-            //$acc = $callbackFn($acc, $currentValue);
             $currentTuple = $this->currentTuple();
             $acc = $callbackFn($acc, ...$currentTuple);
             $this->next();
