@@ -24,16 +24,16 @@ class ModificationDuringIterationTest extends TestCase
                     $set->remove(1);
                 }
                 $verificationSet->add([$v1, $v2]);
-                /* TODO
-                 * PHP 5 output: (1, 1) (1, 3) (1, 4) (1, 5)
-                 * PHP 7 output: (1, 1) (1, 3) (1, 4) (1, 5)
-                 *               (3, 1) (3, 3) (3, 4) (3, 5)
-                 *               (4, 1) (4, 3) (4, 4) (4, 5)
-                 *               (5, 1) (5, 3) (5, 4) (5, 5)
-                 * our output:   (1, 1) (1, 2) (1, 3) (1, 4) (1, 5)
-                 */
             }
         }
+        /* TODO Investigate if nested foreach loops can be supported
+         * PHP 5 output: (1, 1) (1, 3) (1, 4) (1, 5)
+         * PHP 7 output: (1, 1) (1, 3) (1, 4) (1, 5)
+         *               (3, 1) (3, 3) (3, 4) (3, 5)
+         *               (4, 1) (4, 3) (4, 4) (4, 5)
+         *               (5, 1) (5, 3) (5, 4) (5, 5)
+         * our output:   (1, 1) (1, 2) (1, 3) (1, 4) (1, 5)
+         */
         $this->assertCount(4, $set);
         $this->assertTrue($verificationSet->has([1, 2]));
     }
@@ -45,17 +45,17 @@ class ModificationDuringIterationTest extends TestCase
         foreach ($map as $value) {
             unset($map['EzFY']);
             $map['FYFY'] = 4;
-            /*
-             * PHP 5 output: 1, 4
-             * PHP 7 output: 1, 3, 4 <- we have this behavior
-             *
-             * Previously the HashPointer restore mechanism jumped
-             * right to the new element because it "looked" like
-             * it's the same as the removed element (due to colliding
-             * hash and pointer). As we no longer rely on the element
-             * hash for anything, this is no longer an issue.
-             */
         }
+        /*
+         * PHP 5 output: 1, 4
+         * PHP 7 output: 1, 3, 4 <- we have this behavior
+         *
+         * Previously the HashPointer restore mechanism jumped
+         * right to the new element because it "looked" like
+         * it's the same as the removed element (due to colliding
+         * hash and pointer). As we no longer rely on the element
+         * hash for anything, this is no longer an issue.
+         */
         $this->assertCount(3, $map);
         $verificationSet = new Set();
         foreach ($map as $value) {
