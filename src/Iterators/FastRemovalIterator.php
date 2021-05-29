@@ -75,8 +75,7 @@ class FastRemovalIterator
 
     public function remove($key)
     {
-        $keyExists = array_key_exists($key, $this->keyToPosition);
-        if ($keyExists) {
+        if (array_key_exists($key, $this->keyToPosition)) {
             $this->keyToPosition[$key] = self::REMOVED;
         }
     }

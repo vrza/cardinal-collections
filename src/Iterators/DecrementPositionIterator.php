@@ -82,8 +82,7 @@ class DecrementPositionIterator
 
     public function remove($key)
     {
-        $keyExists = array_key_exists($key, $this->keyToPosition);
-        if ($keyExists) {
+        if (array_key_exists($key, $this->keyToPosition)) {
             $keyPosition = $this->keyToPosition[$key];
             unset($this->keyToPosition[$key]);
             $this->enumerateKeyToPosition();
