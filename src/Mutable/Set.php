@@ -37,8 +37,7 @@ class Set implements Countable, Iterator
 
     public function current()
     {
-        $key = $this->map->key();
-        return $this->map->getOriginalKey($key);
+        return $this->map->keyOriginal();
     }
 
     public function key()

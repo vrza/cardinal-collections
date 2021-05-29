@@ -56,7 +56,7 @@ class FastRemovalIterator
             && current($this->keyToPosition) !== self::REMOVED;
     }
 
-    public function add($key)
+    public function addIfAbsent($key)
     {
         if (!array_key_exists($key, $this->keyToPosition)) {
             $this->addNew($key);

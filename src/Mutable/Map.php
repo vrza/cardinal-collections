@@ -36,12 +36,8 @@ class Map implements ArrayAccess, Countable, Iterator
         } else {
             $key = Utilities::isValidArrayKey($offset) ? $offset : Utilities::hashAny($offset);
             $this->originalKeys[$key] = $offset;
-            $isNew = !array_key_exists($key, $this->hashmap);
-            $v = $this->hashmap[$key] = $value;
-            if ($isNew) {
-                $this->iterator->add($key);
-            }
-            return $v;
+            $this->iterator->addIfAbsent($key);
+            return $this->hashmap[$key] = $value;
         }
     }
 
@@ -133,7 +129,7 @@ class Map implements ArrayAccess, Countable, Iterator
         $this->hashmap[] = $value;
         $key = array_keys($this->hashmap)[count($this->hashmap) - 1];
         $this->originalKeys[$key] = $key;
-        $this->iterator->add($key);
+        $this->iterator->addIfAbsent($key);
     }
 
     public function put($key, $value)
@@ -192,9 +188,10 @@ class Map implements ArrayAccess, Countable, Iterator
         return array_values($this->hashmap);
     }
 
-    public function getOriginalKey($hash)
+    public function keyOriginal()
     {
-        return $this->originalKeys[$hash];
+        $key = $this->key();
+        return is_null($key) ? null : $this->originalKeys[$key];
     }
 
     public function __toString(): string
