@@ -13,10 +13,7 @@ class ModificationDuringIterationTest extends TestCase
 {
     public function testNestedLoops(): void
     {
-        $initialArray = [
-            1, 2, 3, 4, 5
-        ];
-        $set = new Set($initialArray);
+        $set = new Set([ 1, 2, 3, 4, 5 ]);
         $verificationSet = new Set();
         foreach ($set as $v1) {
             foreach ($set as $v2) {
@@ -35,13 +32,17 @@ class ModificationDuringIterationTest extends TestCase
          * our output:   (1, 1) (1, 2) (1, 3) (1, 4) (1, 5)
          */
         $this->assertCount(4, $set);
+        $this->assertCount(5, $verificationSet);
+        $this->assertTrue($verificationSet->has([1, 1]));
         $this->assertTrue($verificationSet->has([1, 2]));
+        $this->assertTrue($verificationSet->has([1, 3]));
+        $this->assertTrue($verificationSet->has([1, 4]));
+        $this->assertTrue($verificationSet->has([1, 5]));
     }
 
     public function testRemoveAddSameKey(): void
     {
-        $array = ['EzEz' => 1, 'EzFY' => 2, 'FYEz' => 3];
-        $map = new Map($array);
+        $map = new Map(['EzEz' => 1, 'EzFY' => 2, 'FYEz' => 3]);
         foreach ($map as $value) {
             unset($map['EzFY']);
             $map['FYFY'] = 4;
@@ -66,7 +67,7 @@ class ModificationDuringIterationTest extends TestCase
 
     public function testRemove(): void
     {
-        $initialArray = [
+        $map = new Map([
             'pera' => [
                 'name' => 'Pera',
                 'email' => 'pera@ddr.ex'
@@ -79,34 +80,30 @@ class ModificationDuringIterationTest extends TestCase
                 'name' => 'Lazo',
                 'email' => 'lazo@sfrj.ex'
             ]
-        ];
-        $a = new Map($initialArray);
+        ]);
         $reachedLastElement = false;
-        foreach ($a as $k => $v) {
+        foreach ($map as $k => $v) {
             if ($k == 'mika') {
-                $a->remove('pera');
+                $map->remove('pera');
             }
             if ($k == 'lazo') {
                 $reachedLastElement = true;
-                $a->remove($k);
+                $map->remove($k);
             }
         }
         $this->assertTrue($reachedLastElement);
-        $this->assertCount(1, $a);
+        $this->assertCount(1, $map);
     }
 
     public function testRemovePrevious(): void
     {
-        $initialArray = [
-            1, 2, 3, 4, 5
-        ];
-        $set = new Set($initialArray);
+        $set = new Set([ 1, 2, 3, 4, 5 ]);
         $previous = false;
         foreach ($set as $elem) {
             if ($previous) $set->remove($previous);
             $previous = $elem;
         }
-        $this->assertTrue($set->equals(new Set([5])));
+        $this->assertTrue($set->equals(new Set([ 5 ])));
     }
 
     /*
@@ -115,10 +112,7 @@ class ModificationDuringIterationTest extends TestCase
      */
     public function testRemovingCurrent(): void
     {
-        $initialArray = [
-            1, 2, 3, 4, 5
-        ];
-        $set = new Set($initialArray);
+        $set = new Set([ 1, 2, 3, 4, 5 ]);
         $set->rewind();
         $iterated = 0;
         $expected = $set->count();
