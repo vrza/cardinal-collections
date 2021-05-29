@@ -23,7 +23,7 @@ class FastRemovalIterator
     }
 
     private function forwardToValidPosition() {
-        while (current($this->keyToPosition) == self::REMOVED) {
+        while (current($this->keyToPosition) === self::REMOVED) {
             next($this->keyToPosition);
             ++$this->position;
         }
