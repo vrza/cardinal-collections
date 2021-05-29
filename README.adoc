@@ -72,6 +72,7 @@ Add the following to your `composer.json`:
 
 [source,json]
 ----
+{
     "repositories": [
         {
             "type": "vcs",
@@ -81,4 +82,5 @@ Add the following to your `composer.json`:
     "require": {
         "vrza/cardinal-collections": "dev-main"
     }
+}
 ----
