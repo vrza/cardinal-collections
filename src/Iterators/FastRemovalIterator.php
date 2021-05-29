@@ -13,7 +13,6 @@ class FastRemovalIterator
     const REMOVED = -1;
 
     private $keyToPosition = [];
-    private $position = 0;
 
     public function __construct($hashmap)
     {
@@ -25,7 +24,6 @@ class FastRemovalIterator
     private function forwardToValidPosition() {
         while (current($this->keyToPosition) === self::REMOVED) {
             next($this->keyToPosition);
-            ++$this->position;
         }
     }
 
@@ -37,7 +35,6 @@ class FastRemovalIterator
 
     public function rewind()
     {
-        $this->position = 0;
         reset($this->keyToPosition);
         $this->forwardToValidPosition();
     }
@@ -50,13 +47,12 @@ class FastRemovalIterator
     public function next()
     {
         next($this->keyToPosition);
-        ++$this->position;
         $this->forwardToValidPosition();
     }
 
     public function valid()
     {
-        return $this->position < count($this->keyToPosition)
+        return !is_null(key($this->keyToPosition))
             && current($this->keyToPosition) !== self::REMOVED;
     }
 
