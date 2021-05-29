@@ -16,7 +16,7 @@ class Map implements ArrayAccess, Countable, Iterator
 
     private $hashmap;
     private $originalKeys;
-    private $iteratorPosition;
+    private $iterator;
 
     public function __construct(array $array = [])
     {
@@ -25,7 +25,7 @@ class Map implements ArrayAccess, Countable, Iterator
         foreach ($array as $key => $_value) {
             $this->originalKeys[$key] = $key;
         }
-        $this->iteratorPosition = new FastRemovalIterator($this->hashmap);
+        $this->iterator = new FastRemovalIterator($this->hashmap);
     }
 
     // ArrayAccess interface
@@ -39,7 +39,7 @@ class Map implements ArrayAccess, Countable, Iterator
             $isNew = !array_key_exists($key, $this->hashmap);
             $v = $this->hashmap[$key] = $value;
             if ($isNew) {
-                $this->iteratorPosition->add($key);
+                $this->iterator->add($key);
             }
             return $v;
         }
@@ -58,7 +58,7 @@ class Map implements ArrayAccess, Countable, Iterator
         if ($existing) {
             unset($this->originalKeys[$key]);
             unset($this->hashmap[$key]);
-            $this->iteratorPosition->remove($key);
+            $this->iterator->remove($key);
         }
     }
 
@@ -74,31 +74,31 @@ class Map implements ArrayAccess, Countable, Iterator
     // Iterator interface
     public function rewind()
     {
-        $this->iteratorPosition->rewind();
+        $this->iterator->rewind();
         reset($this->originalKeys);
         return reset($this->hashmap);
     }
 
     public function current()
     {
-        $key = $this->iteratorPosition->key();
+        $key = $this->iterator->key();
         return $this->hashmap[$key];
     }
 
     public function key()
     {
-        return $this->iteratorPosition->key();
+        return $this->iterator->key();
     }
 
     public function next()
     {
-        $this->iteratorPosition->next();
+        $this->iterator->next();
         return next($this->hashmap);
     }
 
     public function valid(): bool
     {
-        return $this->iteratorPosition->valid();
+        return $this->iterator->valid();
     }
 
     // Countable interface
@@ -133,7 +133,7 @@ class Map implements ArrayAccess, Countable, Iterator
         $this->hashmap[] = $value;
         $key = array_keys($this->hashmap)[count($this->hashmap) - 1];
         $this->originalKeys[$key] = $key;
-        $this->iteratorPosition->add($key);
+        $this->iterator->add($key);
     }
 
     public function put($key, $value)
