@@ -108,4 +108,25 @@ class ModificationDuringIterationTest extends TestCase
         }
         $this->assertTrue($set->equals(new Set([5])));
     }
+
+    /*
+     *  Test that would break iteration in SplObjectStorage
+     *  https://www.php.net/manual/en/splobjectstorage.detach.php
+     */
+    public function testRemovingCurrent(): void
+    {
+        $initialArray = [
+            1, 2, 3, 4, 5
+        ];
+        $set = new Set($initialArray);
+        $set->rewind();
+        $iterated = 0;
+        $expected = $set->count();
+        while ($set->valid()) {
+            $iterated++;
+            $set->remove($set->current());
+            $set->next();
+        }
+        $this->assertEquals($expected, $iterated);
+    }
 }
