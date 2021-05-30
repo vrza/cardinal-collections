@@ -80,7 +80,7 @@ class FastRemovalIterator implements CardinalIterator
     private function shouldCompact(): bool
     {
         $n = count($this->keyToPosition);
-        return ($n + 2 > self::COMPACTION_MIN)
+        return ($n + 1 >= self::COMPACTION_MIN)
             && (($n & ($n + 1)) === 0)
             && ($this->numUsed / $n < self::COMPACTION_MAX_UTIL);
     }
