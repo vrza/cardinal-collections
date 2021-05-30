@@ -10,7 +10,10 @@ namespace CardinalCollections\Iterators;
  *  used by rewind() and next() skip over removed elements.
  *
  *  The tradeoff is that space usage and rewind()/next() time
- *  may suffer after many element removals.
+ *  may suffer after many element removals. To mitigate this,
+ *  the internal array is compacted when adding a new element
+ *  would result in it being reallocated to twice the size
+ *  and compaction would save a significant amount of space.
  */
 class FastRemovalIterator implements CardinalIterator
 {
