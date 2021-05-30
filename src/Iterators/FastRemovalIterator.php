@@ -49,21 +49,23 @@ class FastRemovalIterator implements CardinalIterator
      */
     private function compact(): void
     {
+        $this->forwardToValidPosition();
         $currentKey = $this->valid() ? key($this->keyToPosition) : null;
         $compacted = [];
         foreach ($this->keyToPosition as $key => $value) {
             if ($value !== self::REMOVED) {
                 $compacted[$key] = $value;
-                // preserve the iterator position
-                if (!is_null($currentKey)) {
-                    next($compacted);
-                    if ($currentKey === key($compacted)) {
-                        $currentKey = null;
-                    }
-                }
             }
         }
-        $this->keyToPosition = $compacted;
+        $this->keyToPosition = &$compacted;
+        $this->numUsed = count($this->keyToPosition);
+        // restore iterator position
+        reset($this->keyToPosition);
+        while (!is_null($currentKey) && !is_null(key($this->keyToPosition))
+            && (key($this->keyToPosition) !== $currentKey))
+        {
+            next($this->keyToPosition);
+        }
     }
 
     /*
