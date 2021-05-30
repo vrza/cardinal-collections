@@ -19,17 +19,15 @@ class FastRemovalIterator implements CardinalIterator
 {
     // Perform compaction when
     // total allocated is at least:
-    const COMPACTION_MIN = 4096;
-    // actually used / total allocated ratio is below:
-    const COMPACTION_MAX_UTIL = 0.7;
+    const COMPACTION_MIN_SIZE = 64 * 1024;
 
     // "Magic" value for removed (unset) entries
     const REMOVED = -1;
 
     // Table of entries
     private $keyToPosition = [];
-    // Number of actually used entries
-    private $numUsed = 0;
+    // Number of actual (defined) elements
+    private $numOfElements = 0;
 
     public function __construct($hashmap)
     {
@@ -61,7 +59,7 @@ class FastRemovalIterator implements CardinalIterator
             }
         }
         $this->keyToPosition = &$compacted;
-        $this->numUsed = count($this->keyToPosition);
+        $this->numOfElements = count($this->keyToPosition);
         // Restore the original iterator position
         reset($this->keyToPosition);
         while (!is_null($currentKey) && !is_null(key($this->keyToPosition))
@@ -72,17 +70,22 @@ class FastRemovalIterator implements CardinalIterator
     }
 
     /*
-     * Starting at COMPACTION_MIN elements,
+     * Starting at COMPACTION_MIN_SIZE elements,
      * compact whenever $n approaches a power of two
      * and compaction would result in size under
-     * COMPACTION_MAX_UTIL of original size
+     * a certain ratio.
+     *
+     * PHP's internal criteria for compaction is:
+     * if (nNumUsed > nNumOfElements + (nNumOfElements >> 5))
+     *
+     * https://github.com/php/php-src/blob/master/Zend/zend_hash.c#L1201
      */
     private function shouldCompact(): bool
     {
         $n = count($this->keyToPosition);
-        return ($n + 1 >= self::COMPACTION_MIN)
+        return ($n + 1 >= self::COMPACTION_MIN_SIZE)
             && (($n & ($n + 1)) === 0)
-            && ($this->numUsed <= self::COMPACTION_MAX_UTIL * $n);
+            && ($this->numOfElements < ($n - ($n >> 2)));
     }
 
     private function forwardToValidPosition(): void
@@ -135,14 +138,14 @@ class FastRemovalIterator implements CardinalIterator
         }
         $count = count($this->keyToPosition);
         $this->keyToPosition[$key] = $count;
-        ++$this->numUsed;
+        ++$this->numOfElements;
     }
 
     public function remove($key): void
     {
         if (array_key_exists($key, $this->keyToPosition)) {
             $this->keyToPosition[$key] = self::REMOVED;
-            --$this->numUsed;
+            --$this->numOfElements;
         }
     }
 
