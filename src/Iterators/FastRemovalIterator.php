@@ -3,12 +3,16 @@
 namespace CardinalCollections\Iterators;
 
 /*
- *  Iterator implementation with element removal in O(1) time.
+ *  Iterator implementation that allows for element removal
+ *  in O(1) time.
  *
  *  Removed elements are assigned a special value REMOVED,
  *  used by rewind() and next() skip over removed elements.
+ *
+ *  The tradeoff is that space usage and rewind()/next() time
+ *  may suffer after many element removals.
  */
-class FastRemovalIterator
+class FastRemovalIterator implements CardinalIterator
 {
     const REMOVED = -1;
 
@@ -21,7 +25,8 @@ class FastRemovalIterator
         }
     }
 
-    private function forwardToValidPosition() {
+    private function forwardToValidPosition(): void
+    {
         while (current($this->keyToPosition) === self::REMOVED) {
             next($this->keyToPosition);
         }
@@ -33,7 +38,7 @@ class FastRemovalIterator
         var_dump($this->keyToPosition);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         reset($this->keyToPosition);
         $this->forwardToValidPosition();
@@ -44,32 +49,32 @@ class FastRemovalIterator
         return $this->valid() ? key($this->keyToPosition) : null;
     }
 
-    public function next()
+    public function next(): void
     {
         next($this->keyToPosition);
         $this->forwardToValidPosition();
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return !is_null(key($this->keyToPosition))
             && current($this->keyToPosition) !== self::REMOVED;
     }
 
-    public function addIfAbsent($key)
+    public function addIfAbsent($key): void
     {
         if (!array_key_exists($key, $this->keyToPosition)) {
             $this->addNew($key);
         }
     }
 
-    private function addNew($key)
+    private function addNew($key): void
     {
         $count = count($this->keyToPosition);
         $this->keyToPosition[$key] = $count;
     }
 
-    public function remove($key)
+    public function remove($key): void
     {
         if (array_key_exists($key, $this->keyToPosition)) {
             $this->keyToPosition[$key] = self::REMOVED;

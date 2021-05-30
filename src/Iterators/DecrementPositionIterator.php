@@ -3,13 +3,13 @@
 namespace CardinalCollections\Iterators;
 
 /*
- *  An Iterator that decrements the position whenever a key
- *  at or before the cursor is removed.
+ *  Iterator implementation that decrements the position whenever
+ *  a key at or before the cursor is removed.
  *
  *  This design has O(n) removal time, as all elements are
  *  re-enumerated on each removal.
  */
-class DecrementPositionIterator
+class DecrementPositionIterator implements CardinalIterator
 {
     private $keyToPosition = [];
     private $position = 0;
@@ -21,7 +21,8 @@ class DecrementPositionIterator
         }
     }
 
-    private function enumerateKeyToPosition() {
+    private function enumerateKeyToPosition(): void
+    {
         $i = 0;
         foreach ($this->keyToPosition as $key => $position) {
             $this->keyToPosition[$key] = $i++;
@@ -34,12 +35,13 @@ class DecrementPositionIterator
         var_dump($this->keyToPosition);
     }
 
-    private static function handleInvalidPosition($position) {
+    private static function handleInvalidPosition($position)
+    {
         fwrite(STDERR, 'Unexpected iterator position: ' . $position . PHP_EOL);
         throw new \Exception("Unexpected iterator position: " . position);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
         reset($this->keyToPosition);
@@ -50,7 +52,7 @@ class DecrementPositionIterator
         return $this->valid() ? key($this->keyToPosition) : null;
     }
 
-    public function next()
+    public function next(): void
     {
         if ($this->position >= 0) {
             next($this->keyToPosition);
@@ -62,25 +64,25 @@ class DecrementPositionIterator
         ++$this->position;
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return $this->position < count($this->keyToPosition);
     }
 
-    public function addIfAbsent($key)
+    public function addIfAbsent($key): void
     {
         if (!array_key_exists($key, $this->keyToPosition)) {
             $this->addNew($key);
         }
     }
 
-    private function addNew($key)
+    private function addNew($key): void
     {
         $count = count($this->keyToPosition);
         $this->keyToPosition[$key] = $count;
     }
 
-    public function remove($key)
+    public function remove($key): void
     {
         if (array_key_exists($key, $this->keyToPosition)) {
             $keyPosition = $this->keyToPosition[$key];

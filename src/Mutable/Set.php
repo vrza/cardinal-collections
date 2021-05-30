@@ -8,6 +8,7 @@ use Iterator;
 
 use CardinalCollections\Collection;
 use CardinalCollections\Utilities;
+use CardinalCollections\Iterators\CardinalIterator;
 
 class Set implements Countable, Iterator
 {
@@ -16,9 +17,9 @@ class Set implements Countable, Iterator
     private $map;
     private $dummyValue = true; 
 
-    public function __construct(array $array = [])
+    public function __construct(array $array = [], CardinalIterator $iterator = null)
     {
-        $this->map = new Map();
+        $this->map = new Map([], $iterator);
         foreach ($array as $_key => $value) {
             $this->map[$value] = $this->dummyValue;
         }

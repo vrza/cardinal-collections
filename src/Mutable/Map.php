@@ -8,6 +8,7 @@ use Iterator;
 
 use CardinalCollections\Collection;
 use CardinalCollections\Utilities;
+use CardinalCollections\Iterators\CardinalIterator;
 use CardinalCollections\Iterators\FastRemovalIterator;
 
 class Map implements ArrayAccess, Countable, Iterator
@@ -18,14 +19,16 @@ class Map implements ArrayAccess, Countable, Iterator
     private $originalKeys;
     private $iterator;
 
-    public function __construct(array $array = [])
+    public function __construct(array $array = [], CardinalIterator $iterator = null)
     {
         $this->hashmap = $array;
         $this->originalKeys = [];
         foreach ($array as $key => $_value) {
             $this->originalKeys[$key] = $key;
         }
-        $this->iterator = new FastRemovalIterator($this->hashmap);
+        $this->iterator = is_null($iterator)
+            ? new FastRemovalIterator($this->hashmap)
+            : $iterator;
     }
 
     // ArrayAccess interface
