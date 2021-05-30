@@ -17,6 +17,19 @@ function stressArray(int $count): void
     }
 }
 
+function stressSplObjectStorage(int $count, $objects): void
+{
+    $s = new SplObjectStorage();
+    $offset = 0;
+    for ($i = $offset; $i < $offset + $count; $i++) {
+        $s->attach($objects[$i]);
+        if ($i % 3 === 1) {
+            $s->detach($objects[$i - 1]);
+        }
+    }
+}
+
+
 function stressIterator(string $iteratorClass, int $count): void
 {
     $set = new Set([], $iteratorClass);
@@ -38,6 +51,19 @@ function benchmarkArray(int $count)
     echo "$duration seconds" . PHP_EOL;
 }
 
+function benchmarkSplObjectStorage(int $count)
+{
+    $objects = [];
+    for ($i = 0; $i < $count; $i++) {
+        $objects[] = new StdClass;
+    }
+    echo "SplObjectStorage, $count elements" . PHP_EOL;
+    $start = microtime(true);
+    stressSplObjectStorage($count, $objects);
+    $duration = microtime(true) - $start;
+    echo "$duration seconds" . PHP_EOL;
+}
+
 function benchmarkIterator(string $iteratorClass, int $count) {
     echo "$iteratorClass, $count elements" . PHP_EOL;
     $start = microtime(true);
@@ -50,5 +76,6 @@ const K = 1000;
 $count = 100 * K;
 
 benchmarkArray($count);
+benchmarkSplObjectStorage($count);
 benchmarkIterator('FastRemovalIterator', $count);
 benchmarkIterator('DecrementPositionIterator', $count);
