@@ -17,18 +17,18 @@ namespace CardinalCollections\Iterators;
  */
 class FastRemovalIterator implements CardinalIterator
 {
-    // perform compaction when
+    // Perform compaction when
     // total allocated is at least:
     const COMPACTION_MIN = 4096;
     // actually used / total allocated ratio is below:
     const COMPACTION_MAX_UTIL = 0.7;
 
-    // "magic" value for removed (unset) entries
+    // "Magic" value for removed (unset) entries
     const REMOVED = -1;
 
-    // table of entries
+    // Table of entries
     private $keyToPosition = [];
-    // number of actually used entries
+    // Number of actually used entries
     private $numUsed = 0;
 
     public function __construct($hashmap)
@@ -62,7 +62,7 @@ class FastRemovalIterator implements CardinalIterator
         }
         $this->keyToPosition = &$compacted;
         $this->numUsed = count($this->keyToPosition);
-        // restore iterator position
+        // Restore the original iterator position
         reset($this->keyToPosition);
         while (!is_null($currentKey) && !is_null(key($this->keyToPosition))
             && (key($this->keyToPosition) !== $currentKey))
@@ -72,10 +72,10 @@ class FastRemovalIterator implements CardinalIterator
     }
 
     /*
-     * Starting at COMPACTION_MINIMUM elements,
+     * Starting at COMPACTION_MIN elements,
      * compact whenever $n approaches a power of two
      * and compaction would result in size under
-     * COMPACTION_THRESHOLD ratio of original size
+     * COMPACTION_MAX_UTIL of original size
      */
     private function shouldCompact(): bool
     {
