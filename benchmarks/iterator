@@ -11,7 +11,7 @@ function stressArray(int $count): void
     $offset = 13;
     for ($i = $offset; $i < $offset + $count; $i++) {
         $set[$i] = true;
-        if ($i % 2 === 0) {
+        if ($i % 3 === 0) {
             unset($set[$i]);
         }
     }
@@ -47,7 +47,7 @@ function benchmarkIterator(string $iteratorClass, int $count) {
 }
 
 const K = 1000;
-$count = 1000 * K;
+$count = 100 * K;
 
 benchmarkArray($count);
 benchmarkIterator('FastRemovalIterator', $count);
