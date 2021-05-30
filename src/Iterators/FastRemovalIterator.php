@@ -82,7 +82,7 @@ class FastRemovalIterator implements CardinalIterator
         $n = count($this->keyToPosition);
         return ($n + 1 >= self::COMPACTION_MIN)
             && (($n & ($n + 1)) === 0)
-            && ($this->numUsed / $n < self::COMPACTION_MAX_UTIL);
+            && ($this->numUsed <= self::COMPACTION_MAX_UTIL * $n);
     }
 
     private function forwardToValidPosition(): void
