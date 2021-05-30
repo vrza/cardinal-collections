@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CardinalCollections\Mutable;
 
 use Countable;
@@ -8,7 +7,6 @@ use Iterator;
 
 use CardinalCollections\Collection;
 use CardinalCollections\Utilities;
-use CardinalCollections\Iterators\CardinalIterator;
 
 class Set implements Countable, Iterator
 {
@@ -17,9 +15,9 @@ class Set implements Countable, Iterator
     private $map;
     private $dummyValue = true; 
 
-    public function __construct(array $array = [], CardinalIterator $iterator = null)
+    public function __construct(array $array = [], string $iteratorClass = 'FastRemovalIterator')
     {
-        $this->map = new Map([], $iterator);
+        $this->map = new Map([], $iteratorClass);
         foreach ($array as $_key => $value) {
             $this->map[$value] = $this->dummyValue;
         }

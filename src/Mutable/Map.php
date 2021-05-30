@@ -8,8 +8,7 @@ use Iterator;
 
 use CardinalCollections\Collection;
 use CardinalCollections\Utilities;
-use CardinalCollections\Iterators\CardinalIterator;
-use CardinalCollections\Iterators\FastRemovalIterator;
+use CardinalCollections\Iterators\IteratorFactory;
 
 class Map implements ArrayAccess, Countable, Iterator
 {
@@ -19,16 +18,14 @@ class Map implements ArrayAccess, Countable, Iterator
     private $originalKeys;
     private $iterator;
 
-    public function __construct(array $array = [], CardinalIterator $iterator = null)
+    public function __construct(array $array = [], string $iteratorClass = 'FastRemovalIterator')
     {
         $this->hashmap = $array;
         $this->originalKeys = [];
         foreach ($array as $key => $_value) {
             $this->originalKeys[$key] = $key;
         }
-        $this->iterator = is_null($iterator)
-            ? new FastRemovalIterator($this->hashmap)
-            : $iterator;
+        $this->iterator = IteratorFactory::create($iteratorClass, $this->hashmap);
     }
 
     // ArrayAccess interface
