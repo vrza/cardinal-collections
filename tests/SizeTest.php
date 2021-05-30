@@ -34,7 +34,6 @@ class SizeTest extends TestCase
                     }
                 }
                 $current = $set->current();
-                echo "CURRENT = $current\n";
                 break;
             }
         }
