@@ -2,7 +2,9 @@
 
 image:https://github.com/vrza/cardinal-collections/actions/workflows/build.yml/badge.svg[Build Status (GitHub Actions),link=https://github.com/vrza/cardinal-collections/actions]
 
-PHP Map and Set, but with anything as key.
+Mutable Map and Set, but with anything as key.
+
+Fast and reusable generic iterator implementation in pure PHP.
 
 == Features
 
@@ -47,6 +49,20 @@ $value = $map[0];
 unset($map[0]);
 count($map);
 foreach ($map as $key => $value);
+----
+
+Mutations while iterating mostly work as expected:
+
+[source,php]
+----
+$set = new Set([ 1, 2, 3 ]);
+$previous = false;
+foreach ($set as $elem) {
+    if ($previous) $set->remove($previous);
+    $previous = $elem;
+}
+echo $set;
+// output: { 3 }
 ----
 
 == API Reference
