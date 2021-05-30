@@ -1,0 +1,54 @@
+#!/usr/bin/env php
+<?php
+
+require_once (__DIR__ . '/../vendor/autoload.php');
+
+use CardinalCollections\Mutable\Set;
+
+function stressArray(int $count): void
+{
+    $set = [];
+    $offset = 13;
+    for ($i = $offset; $i < $offset + $count; $i++) {
+        $set[$i] = true;
+        if ($i % 2 === 0) {
+            unset($set[$i]);
+        }
+    }
+}
+
+function stressIterator(string $iteratorClass, int $count): void
+{
+    $set = new Set([], $iteratorClass);
+    $offset = 13;
+    for ($i = $offset; $i < $offset + $count; $i++) {
+        $set->add($i);
+        if ($i % 2 === 0) {
+            $set->remove($i - 1);
+        }
+    }
+}
+
+function benchmarkArray(int $count)
+{
+    echo "PHP array, $count elements" . PHP_EOL;
+    $start = microtime(true);
+    stressArray($count);
+    $duration = microtime(true) - $start;
+    echo "$duration seconds" . PHP_EOL;
+}
+
+function benchmarkIterator(string $iteratorClass, int $count) {
+    echo "$iteratorClass, $count elements" . PHP_EOL;
+    $start = microtime(true);
+    stressIterator($iteratorClass, $count);
+    $duration = microtime(true) - $start;
+    echo "$duration seconds" . PHP_EOL;
+}
+
+const K = 1000;
+$count = 100 * K;
+
+benchmarkArray($count);
+benchmarkIterator('FastRemovalIterator', $count);
+benchmarkIterator('DecrementPositionIterator', $count);
