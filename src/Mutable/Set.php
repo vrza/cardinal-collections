@@ -123,22 +123,29 @@ class Set implements Countable, Iterator
 
     public function union(Set $that): Set
     {
-        return $this->reduce(function($acc, $elem) {
+        return $this->reduce(function ($acc, $elem) {
             return $acc->add($elem);
         }, clone($that));
     }
 
     public function subsetOf(Set $that): bool
     {
-        return $this->reduce(function($acc, $elem) use ($that) {
+        return $this->reduce(function ($acc, $elem) use ($that) {
             return $acc && $that->contains($elem);
         }, true);
     }
 
     public function intersect(Set $that)
     {
-        return $this->filter(function($elem) use ($that) {
-           return $that->contains($elem);
+        return $this->filter(function ($elem) use ($that) {
+            return $that->contains($elem);
+        });
+    }
+
+    public function difference(set $that)
+    {
+        return $this->filter(function ($elem) use ($that) {
+            return !$that->contains($elem);
         });
     }
 

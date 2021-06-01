@@ -165,7 +165,7 @@ class SetTest extends TestCase
     public function testFilter(): void
     {
         $set = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-        $odd = $set->filter(function($x) {
+        $odd = $set->filter(function ($x) {
             return $x % 2 == 1;
         });
         $this->assertInstanceOf(Set::class, $odd);
@@ -195,5 +195,15 @@ class SetTest extends TestCase
         $c = new Set([2, 3, 4]);
         $intersection = $a->intersect($b)->intersect($c);
         $this->assertTrue($intersection->equals(new Set([2, 4])));
+    }
+
+    public function testDifference(): void
+    {
+        $a = new Set([1, 2, 3]);
+        $b = new Set([2, 3, 4]);
+        $diffAB = $a->difference($b);
+        $this->assertTrue($diffAB->equals(new Set([1])));
+        $diffBA = $b->difference($a);
+        $this->assertTrue($diffBA->equals(new Set([4])));
     }
 }
