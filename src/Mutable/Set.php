@@ -103,7 +103,7 @@ class Set implements Countable, Iterator
     }
 
     // set operations
-    public function contains($element)
+    public function contains($element): bool
     {
         return $this->has($element);
     }
@@ -133,6 +133,13 @@ class Set implements Countable, Iterator
         return $this->reduce(function($acc, $elem) use ($that) {
             return $acc && $that->contains($elem);
         }, true);
+    }
+
+    public function intersect(Set $that)
+    {
+        return $this->filter(function($elem) use ($that) {
+           return $that->contains($elem);
+        });
     }
 
     public function __toString(): string

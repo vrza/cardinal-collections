@@ -187,4 +187,13 @@ class SetTest extends TestCase
         $nonSubsetOfBigSet = new Set([10, 9]);
         $this->assertFalse($nonSubsetOfBigSet->subsetOf($bigSet));
     }
+
+    public function testIntersect(): void
+    {
+        $a = new Set([1, 2, 3, 4, 5]);
+        $b = new Set([2, 4, 6, 8]);
+        $c = new Set([2, 3, 4]);
+        $intersection = $a->intersect($b)->intersect($c);
+        $this->assertTrue($intersection->equals(new Set([2, 4])));
+    }
 }
