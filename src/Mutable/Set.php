@@ -87,11 +87,6 @@ class Set implements Countable, Iterator
         return $this->remove($element);
     }
 
-    public function clone(Set $that): Set
-    {
-        return clone($that);
-    }
-
     public function asArray(): array
     {
         return $this->map->keys();
@@ -108,6 +103,11 @@ class Set implements Countable, Iterator
     }
 
     // set operations
+    public function contains($element)
+    {
+        return $this->has($element);
+    }
+
     public function equals(Set $that): bool
     {
         $_this = &$this;
@@ -125,7 +125,14 @@ class Set implements Countable, Iterator
     {
         return $this->reduce(function($acc, $elem) {
             return $acc->add($elem);
-        }, $that->clone($that));
+        }, clone($that));
+    }
+
+    public function subsetOf(Set $that): bool
+    {
+        return $this->reduce(function($acc, $elem) use ($that) {
+            return $acc && $that->contains($elem);
+        }, true);
     }
 
     public function __toString(): string

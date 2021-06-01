@@ -172,4 +172,19 @@ class SetTest extends TestCase
         $this->assertCount(5, $odd);
         $this->assertEquals([1, 3, 5, 7, 9], $odd->asArray());
     }
+
+    public function testSubsetOf(): void
+    {
+        $bigSet = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+        $smallSubset = new Set([3, 5, 7]);
+        $this->assertTrue($smallSubset->subsetOf($bigSet));
+
+        $biggerSet = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+        $this->assertFalse($biggerSet->subsetOf($bigSet));
+        $this->assertTrue($bigSet->subsetOf($biggerSet));
+
+        $nonSubsetOfBigSet = new Set([10, 9]);
+        $this->assertFalse($nonSubsetOfBigSet->subsetOf($bigSet));
+    }
 }
