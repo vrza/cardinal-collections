@@ -17,8 +17,9 @@ class Map implements ArrayAccess, Countable, Iterator
     private $hashmap;
     private $originalKeys;
     private $iterator;
+    private $lastAddedKey;
 
-    public function __construct(array $array = [], string $iteratorClass = 'FastRemovalIterator')
+    public function __construct(array $array = [], string $iteratorClass = 'PredefinedKeyPositionIterator')
     {
         $this->hashmap = $array;
         $this->originalKeys = [];
@@ -34,10 +35,12 @@ class Map implements ArrayAccess, Countable, Iterator
         if (is_null($offset)) {
             return $this->append($value);
         } else {
-            $key = Utilities::isValidArrayKey($offset) ? $offset : Utilities::hashAny($offset);
-            $this->originalKeys[$key] = $offset;
-            $this->iterator->addIfAbsent($key);
-            return $this->hashmap[$key] = $value;
+            $internalKey = Utilities::isValidArrayKey($offset) ? $offset : Utilities::hashAny($offset);
+            $this->originalKeys[$internalKey] = $offset;
+            if ($this->iterator->addIfAbsent($internalKey)) {
+                $this->lastAddedKey = $offset;
+            }
+            return $this->hashmap[$internalKey] = $value;
         }
     }
 
@@ -124,12 +127,18 @@ class Map implements ArrayAccess, Countable, Iterator
         return ! $this->isEmpty();
     }
 
+    public function keyLast()
+    {
+        return $this->lastAddedKey;
+    }
+
     public function append($value)
     {
         $this->hashmap[] = $value;
-        $key = array_keys($this->hashmap)[count($this->hashmap) - 1];
+        $key = Utilities::lastKey($this->hashmap);
         $this->originalKeys[$key] = $key;
         $this->iterator->addIfAbsent($key);
+        $this->lastAddedKey = $key;
     }
 
     public function put($key, $value)
@@ -167,7 +176,7 @@ class Map implements ArrayAccess, Countable, Iterator
     public function putIfAbsent($key, $value)
     {
         if (!$this->offsetExists($key)) {
-            $this->hashmap[$key] = $value;
+            $this->offsetSet($key, $value);
             return null;
         } else {
             return $this->offsetGet($key);
