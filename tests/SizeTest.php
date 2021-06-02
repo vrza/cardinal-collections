@@ -5,9 +5,12 @@ use CardinalCollections\Mutable\Set;
 
 class SizeTest extends TestCase
 {
-    public function testSize(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testSize($iteratorClass): void
     {
-        $set = new Set();
+        $set = new Set([], $iteratorClass);
         $offset = 13;
         $count = 16000;
         for ($i = $offset; $i < $offset + $count; $i++) {
@@ -21,12 +24,12 @@ class SizeTest extends TestCase
 
     public function testCompactionPreservesIterator(): void
     {
-        $set = new Set([ 1, 2, 3, 4, 5]);
+        $set = new Set([ 1, 2, 3, 4, 5], 'FastRemovalIterator');
         $current = -1;
         foreach ($set as $x) {
             if ($x == 3) {
                 $offset = 13;
-                $count = 16000;
+                $count = 70000;
                 for ($i = $offset; $i < $offset + $count; $i++) {
                     $set->add($i);
                     if ($i % 2 === 1) {

@@ -5,7 +5,10 @@ use CardinalCollections\Mutable\Map;
 
 class IteratorTest extends TestCase
 {
-    public function testIterator(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testIterator(string $iteratorClass): void
     {
         $initialArray = [
             'pera' => [
@@ -21,7 +24,7 @@ class IteratorTest extends TestCase
                 'email' => 'lazo@sfrj.ex'
             ]
         ];
-        $a = new Map($initialArray);
+        $a = new Map($initialArray, $iteratorClass);
         $keys = '';
         $names = '';
         foreach ($a as $key => $value) {

@@ -62,9 +62,12 @@ class ArrayAccessTest extends TestCase
         $this->assertNull($map[null]);
     }
 
-    public function testIterator(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testIterator($iteratorClass): void
     {
-        $list = new Map();
+        $list = new Map([], $iteratorClass);
         $list[] = 'foo';
         $list[] = 'bar';
         $list[] = 'baz';

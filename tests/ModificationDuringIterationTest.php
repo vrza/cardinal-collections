@@ -4,17 +4,20 @@ use PHPUnit\Framework\TestCase;
 use CardinalCollections\Mutable\Map;
 use CardinalCollections\Mutable\Set;
 
-/*
- * Test to help improve iterator sanity.
- * Good writeup on PHP foreach:
- * https://stackoverflow.com/questions/10057671/how-does-php-foreach-actually-work
+/**
+ *  Tests to help improve iterator sanity.
+ *  Good writeup on PHP foreach:
+ *  https://stackoverflow.com/questions/10057671/how-does-php-foreach-actually-work
  */
 class ModificationDuringIterationTest extends TestCase
 {
-    public function testNestedLoops(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testNestedLoops($iteratorClass): void
     {
-        $set = new Set([ 1, 2, 3, 4, 5 ]);
-        $verificationSet = new Set();
+        $set = new Set([ 1, 2, 3, 4, 5 ], $iteratorClass);
+        $verificationSet = new Set([], $iteratorClass);
         foreach ($set as $v1) {
             foreach ($set as $v2) {
                 if ($v1 == 1 && $v2 == 1) {
@@ -40,9 +43,12 @@ class ModificationDuringIterationTest extends TestCase
         $this->assertTrue($verificationSet->has([1, 5]));
     }
 
-    public function testRemoveAddSameKey(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testRemoveAddSameKey($iteratorClass): void
     {
-        $map = new Map(['EzEz' => 1, 'EzFY' => 2, 'FYEz' => 3]);
+        $map = new Map(['EzEz' => 1, 'EzFY' => 2, 'FYEz' => 3], $iteratorClass);
         foreach ($map as $value) {
             unset($map['EzFY']);
             $map['FYFY'] = 4;
@@ -65,7 +71,10 @@ class ModificationDuringIterationTest extends TestCase
         $this->assertTrue($verificationSet->equals(new Set([1, 3, 4])));
     }
 
-    public function testRemove(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testRemove($iteratorClass): void
     {
         $map = new Map([
             'pera' => [
@@ -80,7 +89,7 @@ class ModificationDuringIterationTest extends TestCase
                 'name' => 'Lazo',
                 'email' => 'lazo@sfrj.ex'
             ]
-        ]);
+        ], $iteratorClass);
         $reachedLastElement = false;
         foreach ($map as $k => $v) {
             if ($k == 'mika') {
@@ -95,9 +104,12 @@ class ModificationDuringIterationTest extends TestCase
         $this->assertCount(1, $map);
     }
 
-    public function testRemovePrevious(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testRemovePrevious($iteratorClass): void
     {
-        $set = new Set([ 1, 2, 3, 4, 5 ]);
+        $set = new Set([ 1, 2, 3, 4, 5 ], $iteratorClass);
         $previous = false;
         foreach ($set as $elem) {
             if ($previous) $set->remove($previous);
@@ -106,13 +118,15 @@ class ModificationDuringIterationTest extends TestCase
         $this->assertTrue($set->equals(new Set([ 5 ])));
     }
 
-    /*
+    /**
      *  Test that would break iteration in SplObjectStorage
      *  https://www.php.net/manual/en/splobjectstorage.detach.php
+     *
+     *  @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
      */
-    public function testRemovingCurrent(): void
+    public function testRemovingCurrent($iteratorClass): void
     {
-        $set = new Set([ 1, 2, 3, 4, 5 ]);
+        $set = new Set([ 1, 2, 3, 4, 5 ], $iteratorClass);
         $set->rewind();
         $iterated = 0;
         $expected = $set->count();

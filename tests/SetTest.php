@@ -97,11 +97,14 @@ class SetTest extends TestCase
         $this->assertCount(0, $a);
     }
 
-    public function testIterator(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testIterator($iteratorClass): void
     {
         $dt_vv_1 = new DateTime('1978-11-13');
         $dt_2021_1 = new DateTime('2021-05-24 20:47:00');
-        $a = new Set();
+        $a = new Set([], $iteratorClass);
         $a->add($dt_vv_1);
         $a->add($dt_2021_1);
         $this->assertCount(2, $a);

@@ -27,12 +27,15 @@ class MapTest extends TestCase
         $this->assertCount(2, $map);
     }
 
-    public function testMapIterator(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testMapIterator($iteratorClass): void
     {
         $map = new Map([
             'foo' => 'bar',
             'baz' => 'boo'
-        ]);
+        ], $iteratorClass);
         foreach ($map as $key => $value) {
             unset($map[$key]);
         }
@@ -77,15 +80,18 @@ class MapTest extends TestCase
         $this->assertTrue($map->isEmpty());
     }
 
-    public function testReduce(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testReduce($iteratorClass): void
     {
-        $map = new Map();
+        $map = new Map([], $iteratorClass);
         $this->assertTrue($map->isEmpty());
         $result = $map->reduce(function ($acc, $value) {
             return $acc + $value;
         });
         $this->assertNull($result);
-        $map2 = new Map([5 => 3, 7 => 1]);
+        $map2 = new Map([5 => 3, 7 => 1], $iteratorClass);
         $this->assertTrue($map2->nonEmpty());
         $result = $map2->reduce(function ($acc, $k, $v) {
             return [$acc[0] + $k, $acc[1] + $v];
@@ -97,9 +103,12 @@ class MapTest extends TestCase
         $this->assertEquals(12, $result[0]);
     }
 
-    public function testMap(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testMap($iteratorClass): void
     {
-        $map = new Map();
+        $map = new Map([], $iteratorClass);
         $this->assertTrue($map->isEmpty());
         $result = $map->map(function ($key, $value) {
             return [$key * $key, $value * $value];
