@@ -4,17 +4,13 @@
 require_once(__DIR__ . '/Utilities.php');
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-use CardinalCollections\Mutable\Set;
+use CardinalCollections\Mutable\Map;
 
 function stressArray(int $count)
 {
     $set = [];
-    $offset = 13;
-    for ($i = $offset; $i < $offset + $count; $i++) {
-        $set[$i] = true;
-        if ($i % 2 === 1) {
-            unset($set[$i]);
-        }
+    for ($i = 0; $i < $count; $i++) {
+        $set[] = 1;
     }
     return $set;
 }
@@ -24,37 +20,26 @@ function stressSplObjectStorage(array $objects)
     $s = new SplObjectStorage();
     for ($i = 0; $i < count($objects); $i++) {
         $s->attach($objects[$i]);
-        if ($i % 2 === 1) {
-            $s->detach($objects[$i - 1]);
-        }
     }
     return $s;
 }
 
-
-function stressIterator(string $iteratorClass, int $count)
+function stressMap(string $iteratorClass, int $count)
 {
-    $set = new Set([], $iteratorClass);
-    $offset = 13;
-    for ($i = $offset; $i < $offset + $count; $i++) {
-        $set->add($i);
-        if ($i % 2 === 1) {
-            $set->remove($i - 1);
-        }
+    $map = new Map([], $iteratorClass);
+    for ($i = 0; $i < $count; $i++) {
+        $map[] = $i;
     }
-    return $set;
+    return $map;
 }
 
-function stressIteratorObjects(string $iteratorClass, array $objects)
+function stressMapObjects(string $iteratorClass, array $objects)
 {
-    $set = new Set([], $iteratorClass);
+    $map = new Map([], $iteratorClass);
     for ($i = 0; $i < count($objects); $i++) {
-        $set->add($objects[$i]);
-        if ($i % 2 === 1) {
-            $set->remove($objects[$i - 1]);
-        }
+        $map[] = $objects[$i];
     }
-    return $set;
+    return $map;
 }
 
 function benchmarkArray(int $count)
@@ -93,12 +78,12 @@ function benchmarkSplObjectStorage(int $count)
     }
 }
 
-function benchmarkIterator(string $iteratorClass, int $count)
+function benchmarkMap(string $iteratorClass, int $count)
 {
     echo "==> $iteratorClass over a set of $count integers" . PHP_EOL;
     $memStart = linuxRssUsage();
     $start = microtime(true);
-    $result = stressIterator($iteratorClass, $count);
+    $result = stressMap($iteratorClass, $count);
     $duration = microtime(true) - $start;
     $mem = linuxRssUsage() - $memStart;
     printf("Time: %0.4f seconds\nMemory: %d bytes\n", $duration, $mem);
@@ -109,7 +94,7 @@ function benchmarkIterator(string $iteratorClass, int $count)
     }
 }
 
-function benchmarkIteratorObjects(string $iteratorClass, int $count)
+function benchmarkMapObjects(string $iteratorClass, int $count)
 {
     $objects = [];
     for ($i = 0; $i < $count; $i++) {
@@ -118,7 +103,7 @@ function benchmarkIteratorObjects(string $iteratorClass, int $count)
     echo "==> $iteratorClass over a set of $count objects" . PHP_EOL;
     $memStart = linuxRssUsage();
     $start = microtime(true);
-    $result = stressIteratorObjects($iteratorClass, $objects);
+    $result = stressMapObjects($iteratorClass, $objects);
     $duration = microtime(true) - $start;
     $mem = linuxRssUsage() - $memStart;
     printf("Time: %0.4f seconds\nMemory: %d bytes\n", $duration, $mem);
@@ -130,15 +115,12 @@ function benchmarkIteratorObjects(string $iteratorClass, int $count)
 }
 
 const K = 1000;
-$count = 500 * K;
+$count = 100 * K;
 
 //benchmarkArray($count);
 //benchmarkSplObjectStorage($count);
 
-//benchmarkIterator('FastRemovalIterator', $count);
-benchmarkIteratorObjects('PredefinedKeyPositionIterator', $count);
-//benchmarkIteratorObjects('FastRemovalIterator', $count);
-
-
-//benchmarkIterator('DecrementPositionIterator', $count);
-//benchmarkIteratorObjects('DecrementPositionIterator', $count);
+benchmarkMap('PredefinedKeyPositionIterator', $count);
+//benchmarkMap('FastRemovalIterator', $count);
+//benchmarkMapObjects('PredefinedKeyPositionIterator', $count);
+//benchmarkMapObjects('FastRemovalIterator', $count);
