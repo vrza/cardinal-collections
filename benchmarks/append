@@ -120,7 +120,7 @@ $count = 100 * K;
 //benchmarkArray($count);
 //benchmarkSplObjectStorage($count);
 
-benchmarkMap('PredefinedKeyPositionIterator', $count);
+//benchmarkMap('PredefinedKeyPositionIterator', $count);
 //benchmarkMap('FastRemovalIterator', $count);
-//benchmarkMapObjects('PredefinedKeyPositionIterator', $count);
+benchmarkMapObjects('PredefinedKeyPositionIterator', $count);
 //benchmarkMapObjects('FastRemovalIterator', $count);

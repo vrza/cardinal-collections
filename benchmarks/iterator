@@ -138,7 +138,3 @@ $count = 500 * K;
 //benchmarkIterator('FastRemovalIterator', $count);
 benchmarkIteratorObjects('PredefinedKeyPositionIterator', $count);
 //benchmarkIteratorObjects('FastRemovalIterator', $count);
-
-
-//benchmarkIterator('DecrementPositionIterator', $count);
-//benchmarkIteratorObjects('DecrementPositionIterator', $count);
