@@ -15,10 +15,10 @@ class Set implements Countable, Iterator
     private $map;
     private $dummyValue = true; 
 
-    public function __construct(array $array = [], string $iteratorClass = 'FastRemovalIterator')
+    public function __construct(iterable $map = [], string $iteratorClass = 'FastRemovalIterator')
     {
         $this->map = new Map([], $iteratorClass);
-        foreach ($array as $_key => $value) {
+        foreach ($map as $_key => $value) {
             $this->map[$value] = $this->dummyValue;
         }
     }

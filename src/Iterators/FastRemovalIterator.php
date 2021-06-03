@@ -29,7 +29,7 @@ class FastRemovalIterator implements CardinalIterator
     // Number of actual (defined) elements
     private $numOfElements = 0;
 
-    public function __construct($map = [])
+    public function __construct(iterable $map = [])
     {
         foreach ($map as $key => $_value) {
             $this->addNew($key);

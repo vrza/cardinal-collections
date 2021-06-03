@@ -19,10 +19,10 @@ class Map implements ArrayAccess, Countable, Iterator
     private $iterator;
     private $lastAddedKey;
 
-    public function __construct(array $array = [], string $iteratorClass = 'PredefinedKeyPositionIterator')
+    public function __construct(iterable $map = [], string $iteratorClass = 'PredefinedKeyPositionIterator')
     {
         $this->iterator = IteratorFactory::create($iteratorClass);
-        foreach ($array as $key => $value) {
+        foreach ($map as $key => $value) {
             $this->offsetSet($key, $value);
         }
     }

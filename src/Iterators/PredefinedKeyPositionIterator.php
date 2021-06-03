@@ -23,7 +23,7 @@ class PredefinedKeyPositionIterator implements CardinalIterator
     // flag that will prevent 'next' method from moving the $keyToPosition IAP
     private $skipNext = false;
 
-    public function __construct($map = [])
+    public function __construct(iterable $map = [])
     {
         foreach ($map as $key => $_value) {
             $this->addNew($key);

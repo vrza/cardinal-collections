@@ -30,6 +30,19 @@ class MapTest extends TestCase
     /**
      * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
      */
+    public function testConstructFromAnother($iteratorClass): void
+    {
+        $mapFrom = new Map([], $iteratorClass);
+        $mapFrom->put(['foo' => 'bar'], 'baz');
+        $mapFrom->append(2);
+        $mapTo = new Map($mapFrom);
+        $this->assertTrue($mapTo->has(['foo' => 'bar']));
+        $this->assertTrue($mapTo->has(0));
+    }
+
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
     public function testMapIterator($iteratorClass): void
     {
         $map = new Map([
