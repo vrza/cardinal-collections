@@ -14,19 +14,17 @@ class Map implements ArrayAccess, Countable, Iterator
 {
     use Collection;
 
-    private $hashmap;
-    private $originalKeys;
+    private $hashmap = [];
+    private $originalKeys = [];
     private $iterator;
     private $lastAddedKey;
 
     public function __construct(array $array = [], string $iteratorClass = 'PredefinedKeyPositionIterator')
     {
-        $this->hashmap = $array;
-        $this->originalKeys = [];
-        foreach ($array as $key => $_value) {
-            $this->originalKeys[$key] = $key;
+        $this->iterator = IteratorFactory::create($iteratorClass);
+        foreach ($array as $key => $value) {
+            $this->offsetSet($key, $value);
         }
-        $this->iterator = IteratorFactory::create($iteratorClass, $this->hashmap);
     }
 
     // ArrayAccess interface
@@ -35,7 +33,7 @@ class Map implements ArrayAccess, Countable, Iterator
         if (is_null($offset)) {
             return $this->append($value);
         } else {
-            $internalKey = Utilities::isValidArrayKey($offset) ? $offset : Utilities::hashAny($offset);
+            $internalKey = Utilities::isDirectKey($offset) ? $offset : Utilities::hashAny($offset);
             $this->originalKeys[$internalKey] = $offset;
             if ($this->iterator->addIfAbsent($internalKey)) {
                 $this->lastAddedKey = $offset;
@@ -46,13 +44,13 @@ class Map implements ArrayAccess, Countable, Iterator
 
     public function offsetExists($offset): bool
     {
-        $key = Utilities::isValidArrayKey($offset) ? $offset : Utilities::hashAny($offset);
+        $key = Utilities::isDirectKey($offset) ? $offset : Utilities::hashAny($offset);
         return isset($this->hashmap[$key]);
     }
 
     public function offsetUnset($offset)
     {
-        $key = Utilities::isValidArrayKey($offset) ? $offset : Utilities::hashAny($offset);
+        $key = Utilities::isDirectKey($offset) ? $offset : Utilities::hashAny($offset);
         $existing = array_key_exists($key, $this->hashmap);
         if ($existing) {
             unset($this->originalKeys[$key]);
@@ -66,7 +64,7 @@ class Map implements ArrayAccess, Countable, Iterator
         if (is_null($offset)) {
             return null;
         }
-        $key = Utilities::isValidArrayKey($offset) ? $offset : Utilities::hashAny($offset);
+        $key = Utilities::isDirectKey($offset) ? $offset : Utilities::hashAny($offset);
         return $this->hashmap[$key] ?? null;
     }
 
@@ -86,7 +84,8 @@ class Map implements ArrayAccess, Countable, Iterator
 
     public function key()
     {
-        return $this->iterator->key();
+        $key = $this->iterator->key();
+        return $key === null ? null : $this->originalKeys[$key];
     }
 
     public function next()
@@ -153,7 +152,7 @@ class Map implements ArrayAccess, Countable, Iterator
 
     public function get($key, $default = null)
     {
-        return array_key_exists($key, $this->hashmap)
+        return $this->offsetExists($key)
             ? $this->offsetGet($key)
             : $default;
     }
@@ -195,12 +194,6 @@ class Map implements ArrayAccess, Countable, Iterator
     public function values(): array
     {
         return array_values($this->hashmap);
-    }
-
-    public function keyOriginal()
-    {
-        $key = $this->key();
-        return is_null($key) ? null : $this->originalKeys[$key];
     }
 
     public function __toString(): string

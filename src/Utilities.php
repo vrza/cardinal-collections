@@ -26,14 +26,15 @@ class Utilities {
     }
 
     /**
-     * Return true if the argument is of integer or string type
+     * Return true if the argument can be used as a key directly,
+     * without the need to hash it first
      *
      * @param mixed $x
      * @return bool
      */
-    public static function isValidArrayKey($x): bool
+    public static function isDirectKey($x): bool
     {
-        return is_int($x) || is_string($x);
+        return is_int($x);
     }
 
     public static function hashAny($value, string $algo = 'sha256')

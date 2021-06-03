@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use CardinalCollections\Mutable\Map;
+use CardinalCollections\Utilities;
 
 class KeyTypesTest extends TestCase
 {
@@ -44,4 +45,22 @@ class KeyTypesTest extends TestCase
         fclose($fp);
     }
 
+    public function testHashInformationHiding(): void
+    {
+        $map = new Map();
+        $array = [1, 2, 3];
+        $hash = Utilities::hashAny($array);
+        $map->add($array, 1);
+        $this->assertFalse($map->has($hash));
+    }
+
+    public function testNoHashKeyClobber(): void
+    {
+        $map = new Map();
+        $array = [1, 2, 3];
+        $hash = Utilities::hashAny($array);
+        $map->add($array, 1);
+        $map->add($hash, 2);
+        $this->assertTrue($map->get($array) === 1);
+    }
 }

@@ -29,9 +29,9 @@ class FastRemovalIterator implements CardinalIterator
     // Number of actual (defined) elements
     private $numOfElements = 0;
 
-    public function __construct($hashmap)
+    public function __construct($map = [])
     {
-        foreach ($hashmap as $key => $_value) {
+        foreach ($map as $key => $_value) {
             $this->addNew($key);
         }
     }
