@@ -89,7 +89,6 @@ class FastRemovalIterator implements CardinalIterator
 
     public function dump()
     {
-        var_dump($this->position);
         var_dump($this->keyToPosition);
     }
 
