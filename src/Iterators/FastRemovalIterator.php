@@ -2,7 +2,7 @@
 
 namespace CardinalCollections\Iterators;
 
-/*
+/**
  *  Iterator implementation that allows for element removal
  *  in O(1) time.
  *
@@ -28,13 +28,6 @@ class FastRemovalIterator implements CardinalIterator
     private $keyToPosition = [];
     // Number of actual (defined) elements
     private $numOfElements = 0;
-
-    public function __construct(iterable $map = [])
-    {
-        foreach ($map as $key => $_value) {
-            $this->addNew($key);
-        }
-    }
 
     /*
      * In PHP 7, once nNumUsed reaches nTableSize PHP will try to
@@ -63,8 +56,7 @@ class FastRemovalIterator implements CardinalIterator
         // Restore the original iterator position
         reset($this->keyToPosition);
         while (!is_null($currentKey) && !is_null(key($this->keyToPosition))
-            && (key($this->keyToPosition) !== $currentKey))
-        {
+            && (key($this->keyToPosition) !== $currentKey)) {
             next($this->keyToPosition);
         }
     }
@@ -150,5 +142,4 @@ class FastRemovalIterator implements CardinalIterator
             --$this->numOfElements;
         }
     }
-
 }

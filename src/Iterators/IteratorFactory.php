@@ -6,10 +6,10 @@ use Exception;
 
 class IteratorFactory
 {
-    public static function create(string $iteratorClass, iterable $map = []) {
+    public static function create(string $iteratorClass) {
         $class = 'CardinalCollections\\Iterators\\' . $iteratorClass;
         if (class_exists($class)) {
-            return new $class($map);
+            return new $class();
         } else {
             throw new Exception("Class $class does not exist");
         }

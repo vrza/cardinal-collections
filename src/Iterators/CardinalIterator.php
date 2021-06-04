@@ -2,7 +2,7 @@
 
 namespace CardinalCollections\Iterators;
 
-/*
+/**
  * Interface between collection and iterator implementations
  */
 interface CardinalIterator
