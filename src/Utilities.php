@@ -5,7 +5,6 @@ namespace CardinalCollections;
 use InvalidArgumentException;
 
 class Utilities {
-
     /**
      * Returns the last key of an array
      *

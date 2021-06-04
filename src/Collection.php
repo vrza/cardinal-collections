@@ -4,7 +4,6 @@ namespace CardinalCollections;
 
 trait Collection
 {
-
     public function reduce($callbackFn, $initialValue = null)
     {
         if ($this->isEmpty()) {

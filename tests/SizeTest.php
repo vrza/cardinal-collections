@@ -24,7 +24,7 @@ class SizeTest extends TestCase
 
     public function testCompactionPreservesIterator(): void
     {
-        $set = new Set([ 1, 2, 3, 4, 5], 'FastRemovalIterator');
+        $set = new Set([1, 2, 3, 4, 5], 'FastRemovalIterator');
         $current = -1;
         foreach ($set as $x) {
             if ($x == 3) {

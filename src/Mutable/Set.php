@@ -159,5 +159,4 @@ class Set implements Countable, Iterator
         $acc .= ' }';
         return $acc;
     }
-
 }
