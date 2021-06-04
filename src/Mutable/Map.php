@@ -202,7 +202,7 @@ class Map implements ArrayAccess, Countable, Iterator
         $sep = PHP_EOL;
         foreach ($this as $key => $value) {
             $acc .= $sep . '  ' .
-                Utilities::stringRepresentation($this->originalKeys[$key]) .
+                Utilities::stringRepresentation($key) .
                 ' -> ' . Utilities::stringRepresentation($value);
         }
         $acc .= $sep . ')';

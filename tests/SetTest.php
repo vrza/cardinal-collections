@@ -209,4 +209,11 @@ class SetTest extends TestCase
         $diffBA = $b->difference($a);
         $this->assertTrue($diffBA->equals(new Set([4])));
     }
+
+    public function testPrettyPrint(): void
+    {
+        $set = new Set();
+        $set->add([1,2]);
+        $this->assertEquals('{ [1,2] }', $set->__toString());
+    }
 }

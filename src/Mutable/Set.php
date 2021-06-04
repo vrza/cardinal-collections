@@ -51,7 +51,6 @@ class Set implements Countable, Iterator
 
     public function valid(): bool
     {
-        //return $this->map->key() !== null;
         return $this->map->valid();
     }
 

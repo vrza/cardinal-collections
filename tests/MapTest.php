@@ -135,4 +135,16 @@ class MapTest extends TestCase
         $this->assertCount(1, $result);
         $this->assertEquals(16, $result->get(9));
     }
+
+    public function testPrettyPrint(): void
+    {
+        $map = new Map();
+        $map->add([1,2], [3,4]);
+        $map->add([5,6], [7,8]);
+        $this->assertEquals(
+'( 
+  [1,2] -> [3,4]
+  [5,6] -> [7,8]
+)', $map->__toString());
+    }
 }
