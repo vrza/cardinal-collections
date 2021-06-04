@@ -6,25 +6,6 @@ use InvalidArgumentException;
 
 class Utilities {
     /**
-     * Returns the last key of an array
-     *
-     *  On PHP < 7.3, this is O(n), as we need to walk through all the keys:
-     *    array_keys($array)[count($array) - 1]
-     *
-     *  PHP >= 7.3 can do it in O(1):
-     *    array_key_last($array)
-     *
-     * @param array $array
-     * @return int|string|null
-     */
-    public static function lastKey(array $array)
-    {
-        return (function_exists('array_key_last'))
-            ? array_key_last($array)
-            : array_keys($array)[count($array) - 1];
-    }
-
-    /**
      * Return true if the argument can be used as a key directly,
      * without the need to hash it first
      *

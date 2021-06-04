@@ -7,6 +7,7 @@ use Countable;
 use Iterator;
 
 use CardinalCollections\Collection;
+use CardinalCollections\IterableUtils;
 use CardinalCollections\Utilities;
 use CardinalCollections\Iterators\IteratorFactory;
 
@@ -125,7 +126,7 @@ class Map implements ArrayAccess, Countable, Iterator
 
     public function keyLast()
     {
-        $lastInternalKey = Utilities::lastKey($this->hashmap);
+        $lastInternalKey = IterableUtils::lastKey($this->hashmap);
         return $lastInternalKey === null
             ? null
             : $this->originalKeys[$lastInternalKey];
@@ -134,7 +135,7 @@ class Map implements ArrayAccess, Countable, Iterator
     public function append($value)
     {
         $this->hashmap[] = $value;
-        $key = Utilities::lastKey($this->hashmap);
+        $key = IterableUtils::lastKey($this->hashmap);
         $this->originalKeys[$key] = $key;
         $this->iterator->addIfAbsent($key);
     }
