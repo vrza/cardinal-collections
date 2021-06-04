@@ -17,6 +17,26 @@ class KeyTypesTest extends TestCase
         self::assertEquals('document', $values[0]);
     }
 
+    public function testNestedArrayAsKey(): void
+    {
+        $initialArray = [
+          'k' => [
+              'k1' => 'v1',
+              'k2' => 'v2'
+          ]
+        ];
+        $structurallyEquivalentArray = [
+          'k' => [
+              'k2' => 'v2',
+              'k1' => 'v1'
+          ]
+        ];
+        $map = new Map();
+        $map[$initialArray] = 'document';
+        self::assertTrue(isset($map[$structurallyEquivalentArray]));
+        self::assertEquals('document', $map[$structurallyEquivalentArray]);
+    }
+
     public function testBooleanAsKey(): void
     {
         $map = new Map();
