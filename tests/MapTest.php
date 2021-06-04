@@ -96,6 +96,21 @@ class MapTest extends TestCase
     /**
      * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
      */
+    public function testLastKey($iteratorClass): void
+    {
+        $map = new Map();
+        $this->assertNull($map->keyLast());
+        $map->put('foo', true);
+        $map->put('bar', true);
+        $map->put('baz', true);
+        $this->assertEquals('baz', $map->keyLast());
+        $map->delete('baz');
+        $this->assertEquals('bar', $map->keyLast());
+    }
+
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
     public function testReduce($iteratorClass): void
     {
         $map = new Map([], $iteratorClass);

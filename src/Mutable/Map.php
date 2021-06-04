@@ -17,7 +17,6 @@ class Map implements ArrayAccess, Countable, Iterator
     private $hashmap = [];
     private $originalKeys = [];
     private $iterator;
-    private $lastAddedKey;
 
     public function __construct(iterable $map = [], string $iteratorClass = 'PredefinedKeyPositionIterator')
     {
@@ -35,9 +34,7 @@ class Map implements ArrayAccess, Countable, Iterator
         } else {
             $internalKey = Utilities::isDirectKey($offset) ? $offset : Utilities::hashAny($offset);
             $this->originalKeys[$internalKey] = $offset;
-            if ($this->iterator->addIfAbsent($internalKey)) {
-                $this->lastAddedKey = $offset;
-            }
+            $this->iterator->addIfAbsent($internalKey);
             return $this->hashmap[$internalKey] = $value;
         }
     }
@@ -128,7 +125,10 @@ class Map implements ArrayAccess, Countable, Iterator
 
     public function keyLast()
     {
-        return $this->lastAddedKey;
+        $lastInternalKey = Utilities::lastKey($this->hashmap);
+        return $lastInternalKey === null
+            ? null
+            : $this->originalKeys[$lastInternalKey];
     }
 
     public function append($value)
@@ -137,7 +137,6 @@ class Map implements ArrayAccess, Countable, Iterator
         $key = Utilities::lastKey($this->hashmap);
         $this->originalKeys[$key] = $key;
         $this->iterator->addIfAbsent($key);
-        $this->lastAddedKey = $key;
     }
 
     public function put($key, $value)
