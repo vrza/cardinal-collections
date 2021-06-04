@@ -104,16 +104,34 @@ class SetTest extends TestCase
     {
         $dt_vv_1 = new DateTime('1978-11-13');
         $dt_2021_1 = new DateTime('2021-05-24 20:47:00');
-        $a = new Set([], $iteratorClass);
-        $a->add($dt_vv_1);
-        $a->add($dt_2021_1);
-        $this->assertCount(2, $a);
-        $this->assertTrue($a->nonEmpty());
-        foreach ($a as $elem) {
-            $a->remove($elem);
+        $set = new Set([], $iteratorClass);
+        $set->add($dt_vv_1);
+        $set->add($dt_2021_1);
+        $this->assertCount(2, $set);
+        $this->assertTrue($set->nonEmpty());
+        foreach ($set as $elem) {
+            $set->remove($elem);
         }
-        $this->assertCount(0, $a);
-        $this->assertTrue($a->isEmpty());
+        $this->assertCount(0, $set);
+        $this->assertTrue($set->isEmpty());
+    }
+
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testKeyWhileIterating($iteratorClass): void
+    {
+        $dt_vv_1 = new DateTime('1978-11-13');
+        $dt_2021_1 = new DateTime('2021-05-24 20:47:00');
+        $set = new Set([], $iteratorClass);
+        $set->add($dt_vv_1);
+        $set->add($dt_2021_1);
+        $this->assertCount(2, $set);
+        $this->assertTrue($set->nonEmpty());
+        foreach ($set as $elem) {
+            $this->assertEquals($elem, $set->key());
+            $this->assertEquals($elem, $set->current());
+        }
     }
 
     public function testSetUnion(): void
