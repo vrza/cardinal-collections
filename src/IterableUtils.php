@@ -15,18 +15,22 @@ class IterableUtils
 
     public static function keys(iterable $iterable)
     {
-        return self::iterable_keys_reduce($iterable, function ($acc, $key) {
-            $acc[] = $key;
-            return $acc;
-        }, []);
+        return (is_array($iterable))
+            ? array_keys($iterable)
+            : self::iterable_keys_reduce($iterable, function ($acc, $key) {
+                $acc[] = $key;
+                return $acc;
+            }, []);
     }
 
     public static function values(iterable $iterable)
     {
-        return self::iterable_values_reduce($iterable, function ($acc, $value) {
-            $acc[] = $value;
-            return $acc;
-        }, []);
+        return (is_array($iterable))
+            ? array_values($iterable)
+            : self::iterable_values_reduce($iterable, function ($acc, $value) {
+                $acc[] = $value;
+                return $acc;
+            }, []);
     }
 
     public static function iterable_keys_reduce(iterable $iterable, callable $callback, $acc = null)

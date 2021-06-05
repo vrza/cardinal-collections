@@ -26,17 +26,31 @@ final class IterableUtilsTest extends TestCase
         $this->assertEquals(2, $last);
     }
 
-    public function testKeys(): void
+    public function testKeysOnArray(): void
     {
         $a = ['foo', 'bar', 'baz'];
         $keys = IterableUtils::keys($a);
         $this->assertEquals([0, 1, 2], $keys);
     }
 
-    public function testValues(): void
+    public function testKeysOnMap(): void
+    {
+        $map = new Map(['foo', 'bar', 'baz']);
+        $keys = IterableUtils::keys($map);
+        $this->assertEquals([0, 1, 2], $keys);
+    }
+
+    public function testValuesOnArray(): void
     {
         $a = ['foo', 'bar', 'baz'];
         $values = IterableUtils::values($a);
+        $this->assertEquals(['foo', 'bar', 'baz'], $values);
+    }
+
+    public function testValuesOnMap(): void
+    {
+        $map = new Map(['foo', 'bar', 'baz']);
+        $values = IterableUtils::values($map);
         $this->assertEquals(['foo', 'bar', 'baz'], $values);
     }
 
