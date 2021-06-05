@@ -4,7 +4,13 @@ namespace CardinalCollections;
 
 trait Collection
 {
-    public function reduce($callbackFn, $initialValue = null)
+
+    public function reduce(callable $callback, $initalValue = null)
+    {
+        return IterableUtils::iterable_reduce($this, $callback, $initalValue);
+    }
+
+    public function reduceTuples(callable $callbackFn, $initialValue = null)
     {
         if ($this->isEmpty()) {
             return $initialValue;
@@ -29,7 +35,12 @@ trait Collection
         return $acc;
     }
 
-    public function map($callbackFn)
+    public function map(callable $callback)
+    {
+        return $this->mapTuples($callback);
+    }
+
+    public function mapTuples(callable $callbackFn)
     {
         $class = get_class($this);
         $result = new $class;
@@ -54,7 +65,12 @@ trait Collection
         return $result;
     }
 
-    public function filter($callbackFn)
+    public function filter(callable $callback)
+    {
+        return $this->filterTuples($callback);
+    }
+
+    public function filterTuples(callable $callbackFn)
     {
         $class = get_class($this);
         $result = new $class;

@@ -119,13 +119,45 @@ class MapTest extends TestCase
             return $acc + $value;
         });
         $this->assertNull($result);
-        $map2 = new Map([5 => 3, 7 => 1], $iteratorClass);
+
+        $map2 = new Map([5 => 3, 7 => 1, 9 => -2], $iteratorClass);
         $this->assertTrue($map2->nonEmpty());
         $result = $map2->reduce(function ($acc, $k, $v) {
             return [$acc[0] + $k, $acc[1] + $v];
+        }, [0,0]);
+        $this->assertEquals(21, $result[0]);
+        $this->assertEquals(2, $result[1]);
+
+        $map3 = new Map([5 => 3, 7 => 1, 9 => -2], $iteratorClass);
+        $sumOfKeys = $map3->reduce(function ($acc, $k) {
+            return $acc + $k;
+        }, 0);
+        $this->assertEquals(21, $sumOfKeys);
+        $sumOfValues = $map3->reduce(function ($acc, $_k, $v) {
+            return $acc + $v;
+        });
+        $this->assertEquals(2, $sumOfValues);
+    }
+
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testReduceTuples($iteratorClass): void
+    {
+        $map = new Map([], $iteratorClass);
+        $this->assertTrue($map->isEmpty());
+        $result = $map->reduceTuples(function ($acc, $value) {
+            return $acc + $value;
+        });
+        $this->assertNull($result);
+        $map2 = new Map([5 => 3, 7 => 1], $iteratorClass);
+        $this->assertTrue($map2->nonEmpty());
+        $result = $map2->reduceTuples(function ($acc, $k, $v) {
+            return [$acc[0] + $k, $acc[1] + $v];
         });
         $this->assertEquals(12, $result[0]);
-        $result = $map2->reduce(function ($acc, $k) {
+        $this->assertEquals(4, $result[1]);
+        $result = $map2->reduceTuples(function ($acc, $k) {
             return [$acc[0] + $k, $acc[1]];
         });
         $this->assertEquals(12, $result[0]);

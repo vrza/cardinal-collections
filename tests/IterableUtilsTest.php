@@ -59,7 +59,7 @@ final class IterableUtilsTest extends TestCase
         $a = [1, 2, 3];
         $sum = IterableUtils::iterable_values_reduce($a, function($acc, $x) {
            return $acc + $x;
-        }, 0);
+        });
         $this->assertEquals(6, $sum);
     }
 

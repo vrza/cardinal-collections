@@ -35,26 +35,42 @@ class IterableUtils
 
     public static function iterable_keys_reduce(iterable $iterable, callable $callback, $acc = null)
     {
+        $first = true;
         foreach ($iterable as $key => $_value) {
-            $acc = $callback($acc, $key);
+            if ($first && $acc === null) {
+                $acc = $key;
+                $first = false;
+            } else {
+                $acc = $callback($acc, $key);
+            }
         }
         return $acc;
     }
 
-    public static function iterable_values_reduce(iterable $iterable, $callback, $acc = null)
+    public static function iterable_values_reduce(iterable $iterable, callable $callback, $acc = null)
     {
-        {
-            foreach ($iterable as $_key => $value) {
+        $first = true;
+        foreach ($iterable as $_key => $value) {
+            if ($first && $acc === null) {
+                $acc = $value;
+                $first = false;
+            } else {
                 $acc = $callback($acc, $value);
             }
-            return $acc;
         }
+        return $acc;
     }
 
     public static function iterable_reduce(iterable $iterable, callable $callback, $acc = null)
     {
+        $first = true;
         foreach ($iterable as $key => $value) {
-            $acc = $callback($acc, $key, $value);
+            if ($first && $acc === null) {
+                $acc = $value;
+                $first = false;
+            } else {
+                $acc = $callback($acc, $key, $value);
+            }
         }
         return $acc;
     }
