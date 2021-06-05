@@ -60,7 +60,7 @@ class Map implements ArrayAccess, Countable, Iterator
 
     public function offsetGet($offset)
     {
-        if (is_null($offset)) {
+        if ($offset === null) {
             return null;
         }
         $key = HashUtils::isDirectKey($offset) ? $offset : HashUtils::hashAny($offset);
@@ -71,8 +71,6 @@ class Map implements ArrayAccess, Countable, Iterator
     public function rewind()
     {
         $this->iterator->rewind();
-        reset($this->originalKeys);
-        return reset($this->hashmap);
     }
 
     public function current()
@@ -90,7 +88,6 @@ class Map implements ArrayAccess, Countable, Iterator
     public function next()
     {
         $this->iterator->next();
-        return next($this->hashmap);
     }
 
     public function valid(): bool
