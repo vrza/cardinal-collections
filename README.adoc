@@ -67,20 +67,182 @@ echo $set;
 
 == API Reference
 
-=== Constructor
+=== Map
+
+==== Constructor
 [source,php]
 ----
-Map(array $array = [])
+Map(iterable $iterable = [])
 ----
-Creates a new `Map` collection, initialized from the given array. If called without arguments, an empty collection is created.
+Creates a new Map, initialized using keys and values from the given iterable. If called without arguments, an empty Map is created.
 
-=== count
+==== put
+[source,php]
+----
+put($key, $value): Map
+----
+Adds an element to the Map. Returns the Map with the added element.
+
+==== add
+[source,php]
+----
+add($key, $value): Map
+----
+An alias for `put`.
+
+==== putIfAbsent
+[source,php]
+----
+putIfAbsent($key, $value)
+----
+If the key is not in the Map, adds a new key/value pair, returning null. If the key is present in the Map, returns the existing value.
+
+==== append
+[source,php]
+----
+append($value): Map
+----
+Appends a value to the Map, using the next available numeric key. Returns the Map.
+
+==== remove
+[source,php]
+----
+remove($key): Map
+----
+Removes a key from the Map, returning the Map.
+
+==== delete
+[source,php]
+----
+delete($key): Map
+----
+An alias for `remove`.
+
+==== get
+[source,php]
+----
+get($key, $default = null)
+----
+Returns the value associated with the key, or `$default` value if the key is not present in the Map.
+
+==== count
 [source,php]
 ----
 count(): int
 ----
-Returns the number of documents in the collection.
+Returns the number of elements in the Map.
 
+==== isEmpty
+[source,php]
+----
+isEmpty(): bool
+----
+Returns true if the Map is empty.
+
+==== nonEmpty
+[source,php]
+----
+nonEmpty(): bool
+----
+Returns true if the Map contains at least one element.
+
+=== Set
+[source,php]
+----
+Set(iterable $iterable = [])
+----
+Creates a new Set, initialized using values of the given iterable. If called without arguments, an empty Set is created.
+
+==== add
+[source,php]
+----
+add($element): Set
+----
+Adds an element to the Set. Returns the Set with added element.
+
+==== has
+[source,php]
+----
+has($element): bool
+----
+Returns true if the element is a member of the Set.
+
+==== contains
+[source,php]
+----
+contains($element): bool
+----
+An alias for `has`.
+
+==== remove
+[source,php]
+----
+remove($element): Set
+----
+Removes an element from the Set, returning the Set without the element.
+
+==== delete
+[source,php]
+----
+delete($key): Set
+----
+An alias for `remove`.
+
+==== equals
+[source,php]
+----
+equals(Set $otherSet): bool
+----
+Returns true if Set and `$otherSet` are equal.
+
+==== subsetOf
+[source,php]
+----
+subsetOf(Set $otherSet): bool
+----
+Returns true if Set is a subset of `$otherSet`.
+
+==== union
+[source,php]
+----
+union(Set $otherSet): Set
+----
+Returns the union of Set and `$otherSet`.
+
+==== intersect
+[source,php]
+----
+intersect(Set $otherSet): Set
+----
+Returns the intersection of Set and `$otherSet`.
+
+==== difference
+[source,php]
+----
+difference(Set $otherSet): Set
+----
+Returns a new Set with all members of Set that are not members of `$otherSet`.
+
+==== count
+[source,php]
+----
+count(): int
+----
+Returns the number of elements in the Set.
+
+==== isEmpty
+[source,php]
+----
+isEmpty(): bool
+----
+Returns true if the Set is empty.
+
+==== nonEmpty
+[source,php]
+----
+nonEmpty(): bool
+----
+Returns true if the Set contains at least one element.
 
 == Setup
 
