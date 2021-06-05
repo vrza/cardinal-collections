@@ -1,24 +1,22 @@
-= PHP Cardinal Collections
+= Cardinal Collections for PHP
 
 image:https://github.com/vrza/cardinal-collections/actions/workflows/build.yml/badge.svg[Build Status (GitHub Actions),link=https://github.com/vrza/cardinal-collections/actions]
 
-Mutable Map and Set, but with anything as key.
+A toolkit for building custom PHP collections.
 
-Fast and reusable generic iterator implementation in pure PHP.
+Included are:
 
-== Features
+- two fast and reusable generic iterator implementations in pure PHP
 
-Built-in map/reduce/filter
+- implementations of mutable Map and Set, but with anything as key
 
-[source,php]
-----
-$set = new Set([0, 1, 2, 3]);
-$squares = $set->map(function ($x) {
-    return $x * $x;
-});
-echo $squares;
-// output: { 0, 1, 4, 9 }
-----
+- utilities for working with iterables
+
+- utilities for hashing arrays and objects
+
+== Map and Set features
+
+Reduce, map and filter:
 
 [source,php]
 ----
@@ -28,6 +26,16 @@ $sum = $set->reduce(function ($acc, $x) {
 });
 echo $sum;
 // output: 16
+----
+
+[source,php]
+----
+$set = new Set([0, 1, 2, 3]);
+$squares = $set->map(function ($x) {
+    return $x * $x;
+});
+echo $squares;
+// output: { 0, 1, 4, 9 }
 ----
 
 [source,php]
