@@ -132,20 +132,22 @@ class Map implements ArrayAccess, Countable, Iterator
             : $this->originalKeys[$lastInternalKey];
     }
 
-    public function append($value)
+    public function append($value): Map
     {
         $this->hashmap[] = $value;
         $key = IterableUtils::lastKey($this->hashmap);
         $this->originalKeys[$key] = $key;
         $this->iterator->addIfAbsent($key);
+        return $this;
     }
 
-    public function put($key, $value)
+    public function put($key, $value): Map
     {
-        return $this->offsetSet($key, $value);
+        $this->offsetSet($key, $value);
+        return $this;
     }
 
-    public function add($key, $value)
+    public function add($key, $value): Map
     {
         return $this->put($key, $value);
     }
@@ -162,14 +164,15 @@ class Map implements ArrayAccess, Countable, Iterator
         return $this->offsetExists($key);
     }
 
-    public function remove($key)
+    public function remove($key): Map
     {
-        return $this->offsetUnset($key);
+        $this->offsetUnset($key);
+        return $this;
     }
 
-    public function delete($key)
+    public function delete($key): Map
     {
-        $this->remove($key);
+        return $this->remove($key);
     }
 
     public function putIfAbsent($key, $value)

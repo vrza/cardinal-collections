@@ -15,10 +15,10 @@ class Set implements Countable, Iterator
     private $map;
     private $dummyValue = true; 
 
-    public function __construct(iterable $map = [], string $iteratorClass = 'FastRemovalIterator')
+    public function __construct(iterable $iterable = [], string $iteratorClass = 'FastRemovalIterator')
     {
         $this->map = new Map([], $iteratorClass);
-        foreach ($map as $_key => $value) {
+        foreach ($iterable as $_key => $value) {
             $this->map[$value] = $this->dummyValue;
         }
     }
@@ -76,12 +76,13 @@ class Set implements Countable, Iterator
         return $this->map->has($element);
     }
 
-    public function remove($element)
+    public function remove($element): Set
     {
         $this->map->remove($element);
+        return $this;
     }
 
-    public function delete($element)
+    public function delete($element): Set
     {
         return $this->remove($element);
     }
