@@ -7,6 +7,7 @@ use Countable;
 use Iterator;
 
 use CardinalCollections\Collection;
+use CardinalCollections\HashUtils;
 use CardinalCollections\IterableUtils;
 use CardinalCollections\Utilities;
 use CardinalCollections\Iterators\IteratorFactory;
@@ -33,7 +34,7 @@ class Map implements ArrayAccess, Countable, Iterator
         if (is_null($offset)) {
             return $this->append($value);
         } else {
-            $internalKey = Utilities::isDirectKey($offset) ? $offset : Utilities::hashAny($offset);
+            $internalKey = HashUtils::isDirectKey($offset) ? $offset : HashUtils::hashAny($offset);
             $this->originalKeys[$internalKey] = $offset;
             $this->iterator->addIfAbsent($internalKey);
             return $this->hashmap[$internalKey] = $value;
@@ -42,13 +43,13 @@ class Map implements ArrayAccess, Countable, Iterator
 
     public function offsetExists($offset): bool
     {
-        $key = Utilities::isDirectKey($offset) ? $offset : Utilities::hashAny($offset);
+        $key = HashUtils::isDirectKey($offset) ? $offset : HashUtils::hashAny($offset);
         return isset($this->hashmap[$key]);
     }
 
     public function offsetUnset($offset)
     {
-        $key = Utilities::isDirectKey($offset) ? $offset : Utilities::hashAny($offset);
+        $key = HashUtils::isDirectKey($offset) ? $offset : HashUtils::hashAny($offset);
         $existing = array_key_exists($key, $this->hashmap);
         if ($existing) {
             unset($this->originalKeys[$key]);
@@ -62,7 +63,7 @@ class Map implements ArrayAccess, Countable, Iterator
         if (is_null($offset)) {
             return null;
         }
-        $key = Utilities::isDirectKey($offset) ? $offset : Utilities::hashAny($offset);
+        $key = HashUtils::isDirectKey($offset) ? $offset : HashUtils::hashAny($offset);
         return $this->hashmap[$key] ?? null;
     }
 

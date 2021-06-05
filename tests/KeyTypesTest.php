@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use CardinalCollections\Mutable\Map;
-use CardinalCollections\Utilities;
+use CardinalCollections\HashUtils;
 
 class KeyTypesTest extends TestCase
 {
@@ -69,7 +69,7 @@ class KeyTypesTest extends TestCase
     {
         $map = new Map();
         $array = [1, 2, 3];
-        $hash = Utilities::hashAny($array);
+        $hash = HashUtils::hashAny($array);
         $map->add($array, 1);
         $this->assertFalse($map->has($hash));
     }
@@ -78,7 +78,7 @@ class KeyTypesTest extends TestCase
     {
         $map = new Map();
         $array = [1, 2, 3];
-        $hash = Utilities::hashAny($array);
+        $hash = HashUtils::hashAny($array);
         $map->add($array, 1);
         $map->add($hash, 2);
         $this->assertTrue($map->get($array) === 1);
