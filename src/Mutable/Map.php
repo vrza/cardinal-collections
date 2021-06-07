@@ -20,7 +20,7 @@ class Map implements ArrayAccess, Countable, Iterator
     private $originalKeys = [];
     private $iterator;
 
-    public function __construct(iterable $map = [], string $iteratorClass = 'PredefinedKeyPositionIterator')
+    public function __construct(iterable $map = [], string $iteratorClass = null)
     {
         $this->iterator = IteratorFactory::create($iteratorClass);
         foreach ($map as $key => $value) {
