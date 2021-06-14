@@ -263,7 +263,7 @@ Add the following to your `composer.json`:
         {
             "type": "vcs",
             "url": "https://github.com/vrza/cardinal-collections"
-         }
+        }
     ],
     "require": {
         "vrza/cardinal-collections": "dev-main"
