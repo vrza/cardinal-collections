@@ -48,7 +48,7 @@ echo $odd;
 // output: { 1, 3, 5, 7 }
 ----
 
-Collections implement `ArrayAccess`, `Iterator` and `Countable` interfaces, so you in many ways you can work with them like you work with standard PHP arrays:
+Collections implement `ArrayAccess`, `Iterator` and `Countable` interfaces, so in many ways you can work with them like you work with standard PHP arrays:
 
 [source,php]
 ----
