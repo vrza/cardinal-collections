@@ -15,7 +15,7 @@ function stressArray(int $count)
     return $set;
 }
 
-function stressSplObjectStorage(array $objects)
+function stressSplObjectStorage(iterable $objects)
 {
     $s = new SplObjectStorage();
     for ($i = 0; $i < count($objects); $i++) {
@@ -33,7 +33,7 @@ function stressMap(string $iteratorClass, int $count)
     return $map;
 }
 
-function stressMapObjects(string $iteratorClass, array $objects)
+function stressMapObjects(string $iteratorClass, iterable $objects)
 {
     $map = new Map([], $iteratorClass);
     for ($i = 0; $i < count($objects); $i++) {

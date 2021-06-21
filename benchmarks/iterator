@@ -19,7 +19,7 @@ function stressArray(int $count)
     return $set;
 }
 
-function stressSplObjectStorage(array $objects)
+function stressSplObjectStorage(iterable $objects)
 {
     $s = new SplObjectStorage();
     for ($i = 0; $i < count($objects); $i++) {
@@ -45,7 +45,7 @@ function stressIterator(string $iteratorClass, int $count)
     return $set;
 }
 
-function stressIteratorObjects(string $iteratorClass, array $objects)
+function stressIteratorObjects(string $iteratorClass, iterable $objects)
 {
     $set = new Set([], $iteratorClass);
     for ($i = 0; $i < count($objects); $i++) {
