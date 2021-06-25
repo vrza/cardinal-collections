@@ -23,7 +23,7 @@ class Set implements Countable, Iterator
         }
     }
 
-    public function dump()
+    public function dump(): void
     {
         $this->map->dump();
     }

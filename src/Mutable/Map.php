@@ -29,15 +29,15 @@ class Map implements ArrayAccess, Countable, Iterator
     }
 
     // ArrayAccess interface
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
-            return $this->append($value);
+            $this->append($value);
         } else {
             $internalKey = HashUtils::isDirectKey($offset) ? $offset : HashUtils::hashAny($offset);
             $this->originalKeys[$internalKey] = $offset;
             $this->iterator->addIfAbsent($internalKey);
-            return $this->hashmap[$internalKey] = $value;
+            $this->hashmap[$internalKey] = $value;
         }
     }
 
@@ -47,7 +47,7 @@ class Map implements ArrayAccess, Countable, Iterator
         return isset($this->hashmap[$key]);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $key = HashUtils::isDirectKey($offset) ? $offset : HashUtils::hashAny($offset);
         $existing = array_key_exists($key, $this->hashmap);
@@ -106,7 +106,7 @@ class Map implements ArrayAccess, Countable, Iterator
         return [$this->key(), $this->current()];
     }
 
-    public function dump()
+    public function dump(): void
     {
         var_dump($this->hashmap);
         var_dump($this->originalKeys);
