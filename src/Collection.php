@@ -92,4 +92,18 @@ trait Collection
 
         return $result;
     }
+
+    public function every(callable $callback): bool
+    {
+        return $this->reduce(function ($acc, $key, $value) use ($callback) {
+            return $acc && $callback($key, $value);
+        }, true);
+    }
+
+    public function some(callable $callback): bool
+    {
+        return $this->reduce(function ($acc, $key, $value) use ($callback) {
+            return $acc || $callback($key, $value);
+        }, false);
+    }
 }

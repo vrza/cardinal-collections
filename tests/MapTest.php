@@ -183,6 +183,36 @@ class MapTest extends TestCase
         $this->assertEquals(16, $result->get(9));
     }
 
+    public function testEvery(): void
+    {
+        $map = new Map(['one' => 'one', 'two' => 'two', 'three' => 'three']);
+        $result1 = $map->every(function ($k, $v) {
+            return $k === $v;
+        });
+        $this->assertTrue($result1);
+
+        $map['three'] = 'four';
+        $result2 = $map->every(function ($k, $v) {
+            return $k === $v;
+        });
+        $this->assertFalse($result2);
+    }
+
+    public function testSome(): void
+    {
+        $map = new Map(['one' => 'two', 'three' => 'four']);
+        $result1 = $map->some(function ($k, $v) {
+            return $k === $v;
+        });
+        $this->assertFalse($result1);
+
+        $map['five'] = 'five';
+        $result2 = $map->some(function ($k, $v) {
+            return $k === $v;
+        });
+        $this->assertTrue($result2);
+    }
+
     public function testPrettyPrint(): void
     {
         $map = new Map();

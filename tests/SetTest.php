@@ -238,6 +238,24 @@ class SetTest extends TestCase
         $this->assertTrue($diffBA->equals(new Set([4])));
     }
 
+    public function testEvery(): void
+    {
+        $a = new Set([1, 3, 5]);
+        $result = $a->every(function ($x) {
+            return $x % 2 === 1;
+        });
+        $this->assertTrue($result);
+    }
+
+    public function testSome(): void
+    {
+        $a = new Set([1, 2, 3]);
+        $result = $a->some(function ($x) {
+            return $x % 2 === 0;
+        });
+        $this->assertTrue($result);
+    }
+
     public function testPrettyPrint(): void
     {
         $set = new Set();
