@@ -117,7 +117,7 @@ class FastRemovalIterator implements CardinalIterator
 
     public function addIfAbsent($key): bool
     {
-        $absent = !array_key_exists($key, $this->keyToPosition);
+        $absent = !array_key_exists($key, $this->keyToPosition) || $this->keyToPosition[$key] === self::REMOVED;
         if ($absent) {
             $this->addNew($key);
         }

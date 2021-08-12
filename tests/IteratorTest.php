@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use CardinalCollections\Mutable\Map;
+use CardinalCollections\Mutable\Set;
 
 class IteratorTest extends TestCase
 {
@@ -33,5 +34,27 @@ class IteratorTest extends TestCase
         }
         $this->assertEquals('peramikalazo', $keys);
         $this->assertEquals('PeraMikaLazo', $names);
+    }
+
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testIteratorAfterRemoveAndAddSameElement($iteratorClass): void
+    {
+        $repeated = 42;
+        $set = new Set([], $iteratorClass);
+        $set->add(22);
+        $set->add(32);
+        $set->add($repeated);
+        foreach ($set as $elem) {
+            $set->remove($elem);
+        }
+        $set->add($repeated);
+        $this->assertCount(1, $set);
+        $result = 0;
+        foreach ($set as $elem) {
+            $result = $elem;
+        }
+        $this->assertEquals($repeated, $result);
     }
 }
