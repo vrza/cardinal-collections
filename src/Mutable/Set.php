@@ -15,7 +15,7 @@ class Set implements Countable, Iterator
     private $map;
     private $dummyValue = true; 
 
-    public function __construct(iterable $iterable = [], string $iteratorClass = 'FastRemovalIterator')
+    public function __construct(iterable $iterable = [], string $iteratorClass = null)
     {
         $this->map = new Map([], $iteratorClass);
         foreach ($iterable as $_key => $value) {
