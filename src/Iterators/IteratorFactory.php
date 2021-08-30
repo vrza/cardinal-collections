@@ -8,7 +8,7 @@ class IteratorFactory
 {
     public static function create(string $iteratorClass = null) {
         $class = $iteratorClass === null
-            ? 'CardinalCollections\Iterators\PredefinedKeyPositionIterator'
+            ? PredefinedKeyPositionIterator::class
             : $iteratorClass;
         if (class_exists($class)) {
             return new $class();
