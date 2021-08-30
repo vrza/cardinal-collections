@@ -7,8 +7,8 @@ class IteratorImplementationProvider
     public static function iteratorClassName(): array
     {
         return [
-            ['PredefinedKeyPositionIterator'],
-            ['FastRemovalIterator']
+            ['CardinalCollections\Iterators\PredefinedKeyPositionIterator'],
+            ['CardinalCollections\Iterators\FastRemovalIterator']
         ];
     }
 }
