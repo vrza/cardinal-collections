@@ -2,13 +2,16 @@
 
 namespace CardinalCollections\Tests\DataProviders;
 
+use CardinalCollections\Iterators\PredefinedKeyPositionIterator;
+use CardinalCollections\Iterators\FastRemovalIterator;
+
 class IteratorImplementationProvider
 {
     public static function iteratorClassName(): array
     {
         return [
-            ['CardinalCollections\Iterators\PredefinedKeyPositionIterator'],
-            ['CardinalCollections\Iterators\FastRemovalIterator']
+            [PredefinedKeyPositionIterator::class],
+            [FastRemovalIterator::class]
         ];
     }
 }
