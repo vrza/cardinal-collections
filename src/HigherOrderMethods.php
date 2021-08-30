@@ -114,7 +114,10 @@ trait HigherOrderMethods
     {
         $rc = new \ReflectionClass($collection);
         $class = $rc->getName();
-        return ($rc->hasMethod('getIteratorClass'))
+        return (
+            $rc->hasMethod('getIteratorClass') &&
+            $rc->getConstructor()->getNumberOfParameters() >= 2
+        )
             ? new $class([], $collection->getIteratorClass())
             : new $class;
     }
