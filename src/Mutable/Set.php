@@ -5,12 +5,12 @@ namespace CardinalCollections\Mutable;
 use Countable;
 use Iterator;
 
-use CardinalCollections\Collection;
+use CardinalCollections\HigherOrderMethods;
 use CardinalCollections\Utilities;
 
 class Set implements Countable, Iterator
 {
-    use Collection;
+    use HigherOrderMethods;
 
     private $map;
     private $dummyValue = true; 
@@ -21,6 +21,11 @@ class Set implements Countable, Iterator
         foreach ($iterable as $_key => $value) {
             $this->map[$value] = $this->dummyValue;
         }
+    }
+
+    public function getIteratorClass(): string
+    {
+        return $this->map->getIteratorClass();
     }
 
     public function dump(): void

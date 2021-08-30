@@ -22,9 +22,12 @@ class SizeTest extends TestCase
         $this->assertCount($count / 2, $set);
     }
 
-    public function testCompactionPreservesIterator(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testCompactionPreservesIterator($iteratorClass): void
     {
-        $set = new Set([1, 2, 3, 4, 5], 'FastRemovalIterator');
+        $set = new Set([1, 2, 3, 4, 5], $iteratorClass);
         $current = -1;
         foreach ($set as $x) {
             if ($x == 3) {

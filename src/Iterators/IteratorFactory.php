@@ -7,10 +7,9 @@ use Exception;
 class IteratorFactory
 {
     public static function create(string $iteratorClass = null) {
-        if ($iteratorClass === null) {
-            $iteratorClass = 'PredefinedKeyPositionIterator';
-        }
-        $class = 'CardinalCollections\\Iterators\\' . $iteratorClass;
+        $class = $iteratorClass === null
+            ? PredefinedKeyPositionIterator::class
+            : $iteratorClass;
         if (class_exists($class)) {
             return new $class();
         } else {

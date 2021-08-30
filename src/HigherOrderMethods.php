@@ -2,7 +2,7 @@
 
 namespace CardinalCollections;
 
-trait Collection
+trait HigherOrderMethods
 {
 
     public function reduce(callable $callback, $initalValue = null)
@@ -42,8 +42,7 @@ trait Collection
 
     public function mapTuples(callable $callbackFn)
     {
-        $class = get_class($this);
-        $result = new $class;
+        $result = self::createEmptyInstanceOf($this);
 
         if ($this->isEmpty()) {
             return $result;
@@ -72,8 +71,7 @@ trait Collection
 
     public function filterTuples(callable $callbackFn)
     {
-        $class = get_class($this);
-        $result = new $class;
+        $result = self::createEmptyInstanceOf($this);
 
         if ($this->isEmpty()) {
             return $result;
@@ -93,6 +91,11 @@ trait Collection
         return $result;
     }
 
+    public function foreach(callable $callback): void
+    {
+        IterableUtils::iterable_foreach($this, $callback);
+    }
+
     public function every(callable $callback): bool
     {
         return $this->reduce(function ($acc, $key, $value) use ($callback) {
@@ -105,5 +108,17 @@ trait Collection
         return $this->reduce(function ($acc, $key, $value) use ($callback) {
             return $acc || $callback($key, $value);
         }, false);
+    }
+
+    private static function createEmptyInstanceOf($collection)
+    {
+        $rc = new \ReflectionClass($collection);
+        $class = $rc->getName();
+        return (
+            $rc->hasMethod('getIteratorClass') &&
+            $rc->getConstructor()->getNumberOfParameters() >= 2
+        )
+            ? new $class([], $collection->getIteratorClass())
+            : new $class;
     }
 }
