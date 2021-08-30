@@ -28,6 +28,11 @@ class Map implements ArrayAccess, Countable, Iterator
         }
     }
 
+    public function getIteratorClass(): string
+    {
+        return get_class($this->iterator);
+    }
+
     // ArrayAccess interface
     public function offsetSet($offset, $value): void
     {

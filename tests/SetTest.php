@@ -134,10 +134,13 @@ class SetTest extends TestCase
         }
     }
 
-    public function testSetUnion(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testSetUnion($iteratorClass): void
     {
-        $set_1 = new Set(['apple', 'orange']);
-        $set_2 = new Set(['orange', 'banana']);
+        $set_1 = new Set(['apple', 'orange'], $iteratorClass);
+        $set_2 = new Set(['orange', 'banana'], $iteratorClass);
         $set_1_2 = $set_1->union($set_2);
         $set_2_1 = $set_2->union($set_1);
         $this->assertTrue($set_1_2->has('apple'));
@@ -148,9 +151,12 @@ class SetTest extends TestCase
         $this->assertTrue($set_1_2->equals($set_1_2));
     }
 
-    public function testReduce(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testReduce($iteratorClass): void
     {
-        $set = new Set();
+        $set = new Set([], $iteratorClass);
         $this->assertTrue($set->isEmpty());
         $value = $set->reduce(function ($acc, $x) {
             return $acc + $x;
@@ -164,9 +170,12 @@ class SetTest extends TestCase
         $this->assertEquals(12, $value);
     }
 
-    public function testMap(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testMap($iteratorClass): void
     {
-        $set = new Set();
+        $set = new Set([], $iteratorClass);
         $this->assertTrue($set->isEmpty());
         $result = $set->map(function ($x) {
             return $x * $x;
@@ -183,9 +192,12 @@ class SetTest extends TestCase
         $this->assertTrue($result->has(49));
     }
 
-    public function testFilter(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testFilter($iteratorClass): void
     {
-        $set = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+        $set = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], $iteratorClass);
         $odd = $set->filter(function ($x) {
             return $x % 2 == 1;
         });
@@ -194,9 +206,12 @@ class SetTest extends TestCase
         $this->assertEquals([1, 3, 5, 7, 9], $odd->asArray());
     }
 
-    public function testFilterEmptySet(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testFilterEmptySet($iteratorClass): void
     {
-        $set = new Set();
+        $set = new Set([], $iteratorClass);
         $empty = $set->filter(function ($x) {
             return $x % 2 == 1;
         });
@@ -204,9 +219,12 @@ class SetTest extends TestCase
         $this->assertCount(0, $empty);
     }
 
-    public function testSubsetOf(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testSubsetOf($iteratorClass): void
     {
-        $bigSet = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+        $bigSet = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], $iteratorClass);
 
         $smallSubset = new Set([3, 5, 7]);
         $this->assertTrue($smallSubset->subsetOf($bigSet));
@@ -219,41 +237,66 @@ class SetTest extends TestCase
         $this->assertFalse($nonSubsetOfBigSet->subsetOf($bigSet));
     }
 
-    public function testIntersect(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testIntersect($iteratorClass): void
     {
-        $a = new Set([1, 2, 3, 4, 5]);
-        $b = new Set([2, 4, 6, 8]);
-        $c = new Set([2, 3, 4]);
+        $a = new Set([1, 2, 3, 4, 5], $iteratorClass);
+        $b = new Set([2, 4, 6, 8], $iteratorClass);
+        $c = new Set([2, 3, 4], $iteratorClass);
         $intersection = $a->intersect($b)->intersect($c);
         $this->assertTrue($intersection->equals(new Set([2, 4])));
     }
 
-    public function testDifference(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testDifference($iteratorClass): void
     {
-        $a = new Set([1, 2, 3]);
-        $b = new Set([2, 3, 4]);
+        $a = new Set([1, 2, 3], $iteratorClass);
+        $b = new Set([2, 3, 4], $iteratorClass);
         $diffAB = $a->difference($b);
         $this->assertTrue($diffAB->equals(new Set([1])));
         $diffBA = $b->difference($a);
         $this->assertTrue($diffBA->equals(new Set([4])));
     }
 
-    public function testEvery(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testEvery($iteratorClass): void
     {
-        $a = new Set([1, 3, 5]);
+        $a = new Set([1, 3, 5], $iteratorClass);
         $result = $a->every(function ($x) {
             return $x % 2 === 1;
         });
         $this->assertTrue($result);
     }
 
-    public function testSome(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testSome($iteratorClass): void
     {
-        $a = new Set([1, 2, 3]);
+        $a = new Set([1, 2, 3], $iteratorClass);
         $result = $a->some(function ($x) {
             return $x % 2 === 0;
         });
         $this->assertTrue($result);
+    }
+
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testForeach($iteratorClass): void
+    {
+        $s = new Set([1, 2, 3], $iteratorClass);
+        $sum = 0;
+        $s->foreach(function ($x) use (&$sum) {
+            $sum += $x;
+        });
+        $this->assertEquals(6, $sum);
     }
 
     public function testPrettyPrint(): void

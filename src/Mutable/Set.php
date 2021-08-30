@@ -23,6 +23,11 @@ class Set implements Countable, Iterator
         }
     }
 
+    public function getIteratorClass(): string
+    {
+        return $this->map->getIteratorClass();
+    }
+
     public function dump(): void
     {
         $this->map->dump();

@@ -183,9 +183,12 @@ class MapTest extends TestCase
         $this->assertEquals(16, $result->get(9));
     }
 
-    public function testEvery(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testEvery($iteratorClass): void
     {
-        $map = new Map(['one' => 'one', 'two' => 'two', 'three' => 'three']);
+        $map = new Map(['one' => 'one', 'two' => 'two', 'three' => 'three'], $iteratorClass);
         $result1 = $map->every(function ($k, $v) {
             return $k === $v;
         });
@@ -198,9 +201,12 @@ class MapTest extends TestCase
         $this->assertFalse($result2);
     }
 
-    public function testSome(): void
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testSome($iteratorClass): void
     {
-        $map = new Map(['one' => 'two', 'three' => 'four']);
+        $map = new Map(['one' => 'two', 'three' => 'four'], $iteratorClass);
         $result1 = $map->some(function ($k, $v) {
             return $k === $v;
         });
@@ -211,6 +217,23 @@ class MapTest extends TestCase
             return $k === $v;
         });
         $this->assertTrue($result2);
+    }
+
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testForeach($iteratorClass): void
+    {
+        $map = new Map([
+            1 => 2,
+            3 => 4,
+            5 => 6
+        ], $iteratorClass);
+        $sum = 0;
+        $map->foreach(function($k, $v) use (&$sum) {
+            $sum += $k + $v;
+        });
+        $this->assertEquals(21, $sum);
     }
 
     public function testPrettyPrint(): void

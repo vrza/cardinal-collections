@@ -71,4 +71,34 @@ final class IterableUtilsTest extends TestCase
         }, 0);
         $this->assertEquals(9, $sum);
     }
+
+    public function testIterableForeach(): void
+    {
+        $a = [1, 2, 3];
+        $sum = 0;
+        IterableUtils::iterable_foreach($a, function($k, $v) use (&$sum) {
+            $sum += $k + $v;
+        });
+        $this->assertEquals(9, $sum);
+    }
+
+    public function testIterableKeysForeach(): void
+    {
+        $a = [1 => 1, 2 => 1, 3 => 1];
+        $sum = 0;
+        IterableUtils::iterable_keys_foreach($a, function($k) use (&$sum) {
+            $sum += $k;
+        });
+        $this->assertEquals(6, $sum);
+    }
+
+    public function testIterableValuesForeach(): void
+    {
+        $a = [1, 2, 3];
+        $sum = 0;
+        IterableUtils::iterable_values_foreach($a, function($x) use (&$sum) {
+            $sum += $x;
+        });
+        $this->assertEquals(6, $sum);
+    }
 }
