@@ -6,7 +6,7 @@ use ArrayAccess;
 use Countable;
 use Iterator;
 
-use CardinalCollections\Collection;
+use CardinalCollections\HigherOrderMethods;
 use CardinalCollections\HashUtils;
 use CardinalCollections\IterableUtils;
 use CardinalCollections\Utilities;
@@ -14,7 +14,7 @@ use CardinalCollections\Iterators\IteratorFactory;
 
 class Map implements ArrayAccess, Countable, Iterator
 {
-    use Collection;
+    use HigherOrderMethods;
 
     private $hashmap = [];
     private $originalKeys = [];

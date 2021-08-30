@@ -2,7 +2,7 @@
 
 namespace CardinalCollections;
 
-trait Collection
+trait HigherOrderMethods
 {
 
     public function reduce(callable $callback, $initalValue = null)
@@ -42,7 +42,7 @@ trait Collection
 
     public function mapTuples(callable $callbackFn)
     {
-        $result = self::createEmptyClone($this);
+        $result = self::createEmptyInstanceOf($this);
 
         if ($this->isEmpty()) {
             return $result;
@@ -71,7 +71,7 @@ trait Collection
 
     public function filterTuples(callable $callbackFn)
     {
-        $result = self::createEmptyClone($this);
+        $result = self::createEmptyInstanceOf($this);
 
         if ($this->isEmpty()) {
             return $result;
@@ -110,7 +110,7 @@ trait Collection
         }, false);
     }
 
-    private static function createEmptyClone($collection)
+    private static function createEmptyInstanceOf($collection)
     {
         $rc = new \ReflectionClass($collection);
         $class = $rc->getName();

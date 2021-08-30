@@ -5,12 +5,12 @@ namespace CardinalCollections\Mutable;
 use Countable;
 use Iterator;
 
-use CardinalCollections\Collection;
+use CardinalCollections\HigherOrderMethods;
 use CardinalCollections\Utilities;
 
 class Set implements Countable, Iterator
 {
-    use Collection;
+    use HigherOrderMethods;
 
     private $map;
     private $dummyValue = true; 
