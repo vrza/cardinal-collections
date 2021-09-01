@@ -4,7 +4,6 @@ namespace CardinalCollections;
 
 trait HigherOrderMethods
 {
-
     public function reduce(callable $callback, $initalValue = null)
     {
         return IterableUtils::iterable_reduce($this, $callback, $initalValue);
@@ -98,16 +97,12 @@ trait HigherOrderMethods
 
     public function every(callable $callback): bool
     {
-        return $this->reduce(function ($acc, $key, $value) use ($callback) {
-            return $acc && $callback($key, $value);
-        }, true);
+        return IterableUtils::iterable_every($this, $callback);
     }
 
     public function some(callable $callback): bool
     {
-        return $this->reduce(function ($acc, $key, $value) use ($callback) {
-            return $acc || $callback($key, $value);
-        }, false);
+        return IterableUtils::iterable_some($this, $callback);
     }
 
     private static function createEmptyInstanceOf($collection)

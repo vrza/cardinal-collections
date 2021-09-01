@@ -95,4 +95,18 @@ class IterableUtils
             $callback($value);
         }
     }
+
+    public static function iterable_every(iterable $iterable, callable $callback): bool
+    {
+        return self::iterable_reduce($iterable, function ($acc, $key, $value) use ($callback) {
+            return $acc && $callback($key, $value);
+        }, true);
+    }
+
+    public static function iterable_some(iterable $iterable, callable $callback): bool
+    {
+        return self::iterable_reduce($iterable, function ($acc, $key, $value) use ($callback) {
+            return $acc || $callback($key, $value);
+        }, false);
+    }
 }
