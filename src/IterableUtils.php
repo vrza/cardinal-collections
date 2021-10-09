@@ -65,12 +65,8 @@ class IterableUtils
     {
         $first = true;
         foreach ($iterable as $key => $value) {
-            if ($first && $acc === null) {
-                $acc = $value;
-                $first = false;
-            } else {
-                $acc = $callback($acc, $key, $value);
-            }
+            $acc = $first && $acc === null ? $value : $callback($acc, $key, $value);
+            $first = false;
         }
         return $acc;
     }
