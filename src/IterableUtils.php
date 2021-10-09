@@ -37,12 +37,8 @@ class IterableUtils
     {
         $first = true;
         foreach ($iterable as $key => $_value) {
-            if ($first && $acc === null) {
-                $acc = $key;
-                $first = false;
-            } else {
-                $acc = $callback($acc, $key);
-            }
+            $acc = $first && $acc === null ? $key : $callback($acc, $key);
+            $first = false;
         }
         return $acc;
     }
@@ -51,12 +47,8 @@ class IterableUtils
     {
         $first = true;
         foreach ($iterable as $value) {
-            if ($first && $acc === null) {
-                $acc = $value;
-                $first = false;
-            } else {
-                $acc = $callback($acc, $value);
-            }
+            $acc = $first && $acc === null ? $value : $callback($acc, $value);
+            $first = false;
         }
         return $acc;
     }
