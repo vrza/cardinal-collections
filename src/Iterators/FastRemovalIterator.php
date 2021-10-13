@@ -70,7 +70,7 @@ class FastRemovalIterator implements CardinalIterator
      * PHP's internal criteria for compaction is:
      * if (nNumUsed > nNumOfElements + (nNumOfElements >> 5))
      *
-     * https://github.com/php/php-src/blob/master/Zend/zend_hash.c#L1201
+     * https://github.com/php/php-src/blob/6729276684ea20b42a7e44cf0a27d303308d3578/Zend/zend_hash.c#L1202
      */
     private function shouldCompact(): bool
     {
