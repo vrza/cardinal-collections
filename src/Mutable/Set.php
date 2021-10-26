@@ -113,17 +113,16 @@ class Set implements Countable, Iterator
         return $this->has($element);
     }
 
+    public function subsetOf(Set $that): bool
+    {
+        return $this->reduce(function ($acc, $elem) use ($that) {
+            return $acc && $that->contains($elem);
+        }, true);
+    }
+
     public function equals(Set $that): bool
     {
-        $_this = &$this;
-        return
-            $_this->reduce(function($acc, $elem) use ($that) {
-                return $acc && $that->has($elem);
-            }, true)
-            &&
-            $that->reduce(function($acc, $elem) use ($_this) {
-                return $acc && $_this->has($elem);
-            }, true);
+        return $this->subsetOf($that) && $that->subsetOf($this);
     }
 
     public function union(Set $that): Set
@@ -131,13 +130,6 @@ class Set implements Countable, Iterator
         return $this->reduce(function ($acc, $elem) {
             return $acc->add($elem);
         }, clone($that));
-    }
-
-    public function subsetOf(Set $that): bool
-    {
-        return $this->reduce(function ($acc, $elem) use ($that) {
-            return $acc && $that->contains($elem);
-        }, true);
     }
 
     public function intersect(Set $that)
