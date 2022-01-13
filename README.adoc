@@ -59,7 +59,7 @@ count($map);
 foreach ($map as $key => $value);
 ----
 
-Mutations while iterating mostly work as expected:
+Mutations while iterating work as expected:
 
 [source,php]
 ----
@@ -71,6 +71,49 @@ foreach ($set as $elem) {
 }
 echo $set;
 // output: { 3 }
+----
+
+map/filter/reduce are implemented as a trait that you can add to your own collections.
+
+== Comparing vanilla PHP to Cardinal Collections
+
+=== Example 1
+
+We read code that uses vanilla PHP array functions by starting from inner arguments and moving outward:
+
+[source,php]
+----
+array_values(array_map(function ($cId) { return new ObjectId($cId); }, $cIds));
+----
+
+Cardinal Collections object-oriented approach with method chaining results in code that reads from left to right:
+
+[source,php]
+----
+(new Set($cIds))->map(function ($cId) { return new ObjectId($cId); })->values();
+----
+
+=== Example 2
+
+Vanilla PHP `array_map()` only maps array values:
+
+[source,php]
+----
+$pidsToExitCodes = reapAnyChildren();
+$jobIds = array_map(function ($pid) {
+    return handleTerminatedProcess($pid);
+}, array_keys($pidsToExitCodes));
+
+----
+
+Cardinal Collections `Map::map()` allows us to map keys and values, so we can easily refactor the above code in order to process additional information (in this example, exit codes) with no added code complexity:
+
+[source,php]
+----
+$pidsToExitCodes = new Map(reapAnyChildren());
+$pidsToJobIds = $pidsToExitCodes->map(function ($pid, $exitCode) {
+    return [$pid, handleTerminatedProcess($pid, $exitCode)];
+});
 ----
 
 == API Reference
