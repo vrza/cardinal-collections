@@ -105,6 +105,11 @@ trait HigherOrderMethods
         return IterableUtils::iterable_some($this, $callback);
     }
 
+    private function currentTuple(): array
+    {
+        return [$this->key(), $this->current()];
+    }
+
     private static function createEmptyInstanceOf($collection)
     {
         $rc = new \ReflectionClass($collection);

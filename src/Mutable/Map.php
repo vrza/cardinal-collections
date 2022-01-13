@@ -106,11 +106,6 @@ class Map implements ArrayAccess, Countable, Iterator
         return count($this->hashmap);
     }
 
-    public function currentTuple(): array
-    {
-        return [$this->key(), $this->current()];
-    }
-
     public function dump(): void
     {
         var_dump($this->hashmap);
