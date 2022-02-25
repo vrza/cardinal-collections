@@ -34,24 +34,24 @@ class Set implements Countable, Iterator
     }
 
     // Iterator interface
-    public function rewind()
+    public function rewind(): void
     {
-        return $this->map->rewind();
+        $this->map->rewind();
     }
 
-    public function current()
+    public function current(): mixed
     {
         return $this->map->key();
     }
 
-    public function key()
+    public function key(): mixed
     {
         return $this->map->key();
     }
 
-    public function next()
+    public function next(): void
     {
-        return $this->map->next();
+        $this->map->next();
     }
 
     public function valid(): bool
