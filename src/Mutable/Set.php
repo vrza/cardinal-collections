@@ -39,12 +39,14 @@ class Set implements Countable, Iterator
         $this->map->rewind();
     }
 
-    public function current(): mixed
+    #[\ReturnTypeWillChange]
+    public function current()
     {
         return $this->map->key();
     }
 
-    public function key(): mixed
+    #[\ReturnTypeWillChange]
+    public function key()
     {
         return $this->map->key();
     }

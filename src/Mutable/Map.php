@@ -63,7 +63,8 @@ class Map implements ArrayAccess, Countable, Iterator
         }
     }
 
-    public function offsetGet($offset): mixed
+    #[\ReturnTypeWillChange]
+    public function offsetGet($offset)
     {
         if ($offset === null) {
             return null;
@@ -78,13 +79,15 @@ class Map implements ArrayAccess, Countable, Iterator
         $this->iterator->rewind();
     }
 
-    public function current(): mixed
+    #[\ReturnTypeWillChange]
+    public function current()
     {
         $key = $this->iterator->key();
         return $this->hashmap[$key];
     }
 
-    public function key(): mixed
+    #[\ReturnTypeWillChange]
+    public function key()
     {
         $key = $this->iterator->key();
         return $key === null ? null : $this->originalKeys[$key];
