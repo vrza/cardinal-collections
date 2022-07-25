@@ -69,8 +69,7 @@ class HashUtils
     /**
      * Recursively sort an array by keys and values.
      *
-     * NOTE: borrowed from https://github.com/illuminate/support/blob/6.x/Arr.php#L606
-     * needs to be replaced with original one, once laravel gets upgraded.
+     * Borrowed from https://github.com/illuminate/support/blob/6.x/Arr.php#L606
      *
      * @param  array  $array
      * @return array
@@ -96,8 +95,7 @@ class HashUtils
      * Determines if an array is associative.
      * An array is "associative" if it doesn't have sequential numerical keys beginning with zero.
      *
-     * NOTE: borrowed from https://github.com/illuminate/support/blob/6.x/Arr.php#L385
-     * needs to be replaced with original one, once laravel gets upgraded.
+     * Borrowed from https://github.com/illuminate/support/blob/6.x/Arr.php#L385
      *
      * @param  array  $array
      * @return bool
