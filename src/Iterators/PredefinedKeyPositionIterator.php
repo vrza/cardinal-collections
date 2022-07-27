@@ -14,13 +14,13 @@ namespace CardinalCollections\Iterators;
 class PredefinedKeyPositionIterator implements CardinalIterator
 {
     // holds each key and its position
-    private $keyToPosition = [];
+    protected $keyToPosition = [];
 
     // key position increment holder, each new entry will increment it by 1
-    private $positionIncrement = 0;
+    protected $positionIncrement = 0;
 
     // flag that will prevent 'next' method from moving the $keyToPosition IAP
-    private $skipNext = false;
+    protected $skipNext = false;
 
     public function dump()
     {
@@ -61,7 +61,7 @@ class PredefinedKeyPositionIterator implements CardinalIterator
         return $absent;
     }
 
-    private function addNew($key)
+    protected function addNew($key)
     {
         $this->keyToPosition[$key] = $this->positionIncrement;
         $this->positionIncrement++;

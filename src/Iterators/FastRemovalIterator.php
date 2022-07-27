@@ -25,9 +25,9 @@ class FastRemovalIterator implements CardinalIterator
     const REMOVED = -1;
 
     // Table of entries
-    private $keyToPosition = [];
+    protected $keyToPosition = [];
     // Number of actual (defined) elements
-    private $numOfElements = 0;
+    protected $numOfElements = 0;
 
     /*
      * In PHP 7, once nNumUsed reaches nTableSize PHP will try to
@@ -41,7 +41,7 @@ class FastRemovalIterator implements CardinalIterator
      * We can prevent PHP from doubling our size by performing
      * compaction ourselves -- moving data to a compacted array.
      */
-    private function compact(): void
+    protected function compact(): void
     {
         $this->forwardToValidPosition();
         $currentKey = $this->valid() ? key($this->keyToPosition) : null;
@@ -72,7 +72,7 @@ class FastRemovalIterator implements CardinalIterator
      *
      * https://github.com/php/php-src/blob/6729276684ea20b42a7e44cf0a27d303308d3578/Zend/zend_hash.c#L1202
      */
-    private function shouldCompact(): bool
+    protected function shouldCompact(): bool
     {
         $n = count($this->keyToPosition);
         return ($n + 1 >= self::COMPACTION_MIN_SIZE)
@@ -80,7 +80,7 @@ class FastRemovalIterator implements CardinalIterator
             && ($this->numOfElements < ($n - ($n >> 2)));
     }
 
-    private function forwardToValidPosition(): void
+    protected function forwardToValidPosition(): void
     {
         while (current($this->keyToPosition) === self::REMOVED) {
             next($this->keyToPosition);
@@ -124,7 +124,7 @@ class FastRemovalIterator implements CardinalIterator
         return $absent;
     }
 
-    private function addNew($key): void
+    protected function addNew($key): void
     {
         if ($this->shouldCompact()) {
             $this->compact();
