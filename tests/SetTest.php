@@ -20,17 +20,17 @@ class SetTest extends TestCase
 
     public function testAssocArrayElements(): void
     {
-            $x1 = ['1' => 11, '2' => 22, '3' => 33];
-            $x2 = ['3' => 33, '2' => 22, '1' => 11];
-            $y = ['foo' => 'bar'];
-            $a = new Set();
-            $a->add($x1);
-            $a->add($y);
-            $b = new Set();
-            $b->add($y);
-            $b->add($x2);
-            $this->assertTrue($a->equals($b));
-            $this->assertTrue($b->equals($a));
+        $x1 = ['1' => 11, '2' => 22, '3' => 33];
+        $x2 = ['3' => 33, '2' => 22, '1' => 11];
+        $y = ['foo' => 'bar'];
+        $a = new Set();
+        $a->add($x1);
+        $a->add($y);
+        $b = new Set();
+        $b->add($y);
+        $b->add($x2);
+        $this->assertTrue($a->equals($b));
+        $this->assertTrue($b->equals($a));
     }
 
     public function testNumericArrayElements(): void
