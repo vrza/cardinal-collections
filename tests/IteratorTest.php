@@ -57,4 +57,22 @@ class IteratorTest extends TestCase
         }
         $this->assertEquals($repeated, $result);
     }
+
+    /**
+     * @dataProvider CardinalCollections\Tests\DataProviders\IteratorImplementationProvider::iteratorClassName
+     */
+    public function testIterationsCountAfterFirstElementRemoval($iteratorClass): void
+    {
+        $map = new Map([90 => 0, 501 => 0, 502 => 0], $iteratorClass);
+        self::assertCount(3, $map);
+        $map->remove(90);
+        self::assertCount(2, $map);
+        $i = 0;
+        $result = $map->map(function ($pid, $exitCode) use (&$i) {
+            $i++;
+            return [$pid, $exitCode];
+        });
+        self::assertCount(2, $result);
+        self::assertEquals(2, $i);
+    }
 }
