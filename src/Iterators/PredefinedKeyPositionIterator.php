@@ -30,6 +30,7 @@ class PredefinedKeyPositionIterator implements CardinalIterator
 
     public function rewind(): void
     {
+        $this->skipNext = false;
         reset($this->keyToPosition);
     }
 
