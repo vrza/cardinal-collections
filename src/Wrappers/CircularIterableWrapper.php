@@ -1,6 +1,6 @@
 <?php
 
-namespace CardinalCollections;
+namespace CardinalCollections\Wrappers;
 
 class CircularIterableWrapper extends IterableWrapper
 {

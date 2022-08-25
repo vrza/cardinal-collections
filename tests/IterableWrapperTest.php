@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use CardinalCollections\IterableWrapper;
+use CardinalCollections\Wrappers\IterableWrapper;
 use CardinalCollections\Mutable\Map;
 
 class IterableWrapperTest extends TestCase

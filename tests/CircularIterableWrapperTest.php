@@ -1,7 +1,7 @@
 <?php
 
+use CardinalCollections\Wrappers\CircularIterableWrapper;
 use PHPUnit\Framework\TestCase;
-use CardinalCollections\CircularIterableWrapper;
 
 class CircularIterableWrapperTest extends TestCase
 {
