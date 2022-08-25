@@ -6,8 +6,14 @@ use Iterator;
 
 class IterableWrapper implements Iterator
 {
+    /**
+     * @var array|iterable
+     */
     private $iterable;
 
+    /**
+     * @param iterable $iterable
+     */
     public function __construct(iterable $iterable = [])
     {
         $this->iterable = $iterable;
@@ -67,6 +73,9 @@ class IterableWrapper implements Iterator
             : current($this->iterable) !== false;
     }
 
+    /**
+     * @return bool
+     */
     private function isIterable(): bool
     {
         return !is_array($this->iterable);
