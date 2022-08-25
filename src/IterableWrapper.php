@@ -18,7 +18,9 @@ class IterableWrapper implements Iterator
      */
     public function current()
     {
-        return current($this->iterable);
+        return $this->isIterable()
+            ? $this->iterable->current()
+            : current($this->iterable);
     }
 
     /**
@@ -26,7 +28,9 @@ class IterableWrapper implements Iterator
      */
     public function key()
     {
-        return key($this->iterable);
+        return $this->isIterable()
+            ? $this->iterable->key()
+            : key($this->iterable);
     }
 
     /**
@@ -34,7 +38,11 @@ class IterableWrapper implements Iterator
      */
     public function next(): void
     {
-        next($this->iterable);
+        if ($this->isIterable()) {
+            $this->iterable->next();
+        } else {
+            next($this->iterable);
+        }
     }
 
     /**
@@ -42,7 +50,11 @@ class IterableWrapper implements Iterator
      */
     public function rewind(): void
     {
-        reset($this->iterable);
+        if ($this->isIterable()) {
+            $this->iterable->rewind();
+        } else {
+            reset($this->iterable);
+        }
     }
 
     /**
@@ -50,7 +62,13 @@ class IterableWrapper implements Iterator
      */
     public function valid(): bool
     {
-        return current($this->iterable) !== false;
+        return $this->isIterable()
+            ? $this->iterable->valid()
+            : current($this->iterable) !== false;
     }
 
+    private function isIterable(): bool
+    {
+        return !is_array($this->iterable);
+    }
 }
