@@ -1,18 +1,18 @@
 <?php
 
-use CardinalCollections\Iterators\WrapAroundIterator;
 use PHPUnit\Framework\TestCase;
+use CardinalCollections\Iterators\CircularIterator;
 use CardinalCollections\Mutable\Set;
 
 /**
  *  Tests for wrap around / infinite iterator.
  */
-class WrapAroundIteratorTest extends TestCase
+class CircularIteratorTest extends TestCase
 {
-    public function testWrapAroundIterator(): void
+    public function testCircularIterator(): void
     {
         $initialArray = ['foo', 'bar', 'baz'];
-        $a = new Set($initialArray, WrapAroundIterator::class);
+        $a = new Set($initialArray, CircularIterator::class);
         $this->assertEquals('foo', $a->current());
         $a->next();
         $this->assertEquals('bar', $a->current());
@@ -26,10 +26,10 @@ class WrapAroundIteratorTest extends TestCase
         $this->assertEquals('foo', $a->current());
     }
 
-    public function testWrapAroundIteratorWhileMutating(): void
+    public function testCircularIteratorWhileMutating(): void
     {
         $initialArray = ['foo', 'bar', 'baz'];
-        $a = new Set($initialArray, WrapAroundIterator::class);
+        $a = new Set($initialArray, CircularIterator::class);
         $this->assertEquals('foo', $a->current());
         $a->remove('foo');
         $this->assertEquals('bar', $a->current());
