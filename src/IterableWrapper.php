@@ -13,26 +13,41 @@ class IterableWrapper implements Iterator
         $this->iterable = $iterable;
     }
 
-    public function current(): mixed
+    /**
+     * @return false|mixed
+     */
+    public function current()
     {
         return current($this->iterable);
     }
 
-    public function key(): mixed
+    /**
+     * @return int|string|null
+     */
+    public function key()
     {
         return key($this->iterable);
     }
 
+    /**
+     * @return void
+     */
     public function next(): void
     {
         next($this->iterable);
     }
 
+    /**
+     * @return void
+     */
     public function rewind(): void
     {
         reset($this->iterable);
     }
 
+    /**
+     * @return bool
+     */
     public function valid(): bool
     {
         return current($this->iterable) !== false;

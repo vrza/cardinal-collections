@@ -4,6 +4,9 @@ namespace CardinalCollections;
 
 class CircularIterableWrapper extends IterableWrapper
 {
+    /**
+     * @return void
+     */
     public function next(): void
     {
         parent::next();

@@ -8,6 +8,9 @@ namespace CardinalCollections\Iterators;
  */
 class CircularIterator extends PredefinedKeyPositionIterator implements CardinalIterator
 {
+    /**
+     * @return void
+     */
     public function next(): void
     {
         if ($this->skipNext) {
