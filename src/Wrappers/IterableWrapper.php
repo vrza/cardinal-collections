@@ -76,7 +76,7 @@ class IterableWrapper implements Iterator
     /**
      * @return bool
      */
-    private function isIterable(): bool
+    protected function isIterable(): bool
     {
         return !is_array($this->iterable);
     }
