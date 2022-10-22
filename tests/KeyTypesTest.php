@@ -56,6 +56,21 @@ class KeyTypesTest extends TestCase
         self::assertEquals('document', $map[$object]);
     }
 
+    public function testCallablesAsKeys(): void
+    {
+        $map = new Map();
+        $map[function ($x) { return $x * 2; }] =
+            function ($x) { return $x + 1; };
+        $map[function ($x) { return $x * 3; }] =
+            function ($x) { return $x + 2; };
+        $s = 0;
+        foreach ($map as $k => $v) {
+            $s += $k($v(3));
+        }
+        // (3 + 1) * 2 + (3 + 2) * 3 = 23
+        $this->assertEquals(23, $s);
+    }
+
     public function testPutResourceAsKeyInvalidArgumentException(): void
     {
         $map = new Map();

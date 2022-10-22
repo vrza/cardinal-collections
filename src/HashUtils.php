@@ -2,10 +2,13 @@
 
 namespace CardinalCollections;
 
+use ReflectionFunction;
 use InvalidArgumentException;
 
 class HashUtils
 {
+    const DEFAULT_ALGO = 'sha256';
+
     /**
      * Return true if the argument can be used as a key directly,
      * without the need to hash it first
@@ -18,7 +21,7 @@ class HashUtils
         return is_int($x);
     }
 
-    public static function hashAny($value, string $algo = 'sha256')
+    public static function hashAny($value, string $algo = self::DEFAULT_ALGO)
     {
         $type = gettype($value);
         switch ($type) {
@@ -32,7 +35,9 @@ class HashUtils
             case 'array':
                 return self::hashArrayByContent($value, $algo);
             case 'object':
-                return self::hashObject($value, $algo);
+                return (is_callable($value)) ?
+                    self::hashCallable($value, $algo) :
+                    self::hashObject($value, $algo);
             default:
                 throw new InvalidArgumentException("Don't know how to hash unknown type $type");
         }
@@ -41,17 +46,28 @@ class HashUtils
     /**
      * Returns a sha256 of an object.
      *
-     * Considers contents and class of object.
-     *
      * @param object $object
      * @param string $algo
      * @return false|string
      */
-    public static function hashObject($object, string $algo = 'sha256')
+    public static function hashObject($object, string $algo = self::DEFAULT_ALGO)
     {
         $contents = json_encode(static::sortRecursive((array) $object));
         $class = get_class($object);
         return hash($algo, "$class: $contents");
+    }
+
+    /**
+     * Returns a sha256 of a callable
+     *
+     * @param callable $callable
+     * @param string $algo
+     * @return false|string
+     */
+    public static function hashCallable(callable $callable, string $algo = self::DEFAULT_ALGO)
+    {
+        $rf = new ReflectionFunction($callable);
+        return hash($algo, $rf->__toString());
     }
 
     /**
@@ -61,7 +77,7 @@ class HashUtils
      * @param string $algo
      * @return false|string
      */
-    public static function hashArrayByContent(array $array, string $algo = 'sha256')
+    public static function hashArrayByContent(array $array, string $algo = self::DEFAULT_ALGO)
     {
         return hash($algo, json_encode(static::sortRecursive($array)));
     }
