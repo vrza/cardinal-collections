@@ -295,21 +295,11 @@ nonEmpty(): bool
 ----
 Returns true if the Set contains at least one element.
 
-== Setup
+== Installation
 
-Add the following to your `composer.json`:
+Assuming you have PHP Composer installed, and that the `composer` executable is in your `$PATH`:
 
-[source,json]
+[source,shell]
 ----
-{
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/vrza/cardinal-collections"
-        }
-    ],
-    "require": {
-        "vrza/cardinal-collections": "dev-main"
-    }
-}
+composer require cardinal-collections/cardinal-collections
 ----
