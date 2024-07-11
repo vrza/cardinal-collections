@@ -6,7 +6,7 @@ use Exception;
 
 class IteratorFactory
 {
-    public static function create(string $iteratorClass = null) {
+    public static function create(?string $iteratorClass = null) {
         $class = $iteratorClass === null
             ? PredefinedKeyPositionIterator::class
             : $iteratorClass;
