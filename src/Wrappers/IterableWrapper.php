@@ -22,6 +22,7 @@ class IterableWrapper implements Iterator
     /**
      * @return false|mixed
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->isIterable()
@@ -32,6 +33,7 @@ class IterableWrapper implements Iterator
     /**
      * @return int|string|null
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->isIterable()
